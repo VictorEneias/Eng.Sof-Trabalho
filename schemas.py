@@ -9,6 +9,10 @@ class UsuarioBase(BaseModel):
 class UsuarioCreate(UsuarioBase):
     senha: str
 
+class UsuarioLogin(BaseModel):
+    email: str
+    senha: str
+
 class UsuarioOut(UsuarioBase):
     id: int
     class Config:
