@@ -71,8 +71,9 @@ class IngressoBase(BaseModel):
     data_emissao: date
     feira_id: int
 
-class IngressoCreate(IngressoBase):
-    pass
+class IngressoCreate(BaseModel):
+    data_emissao: date
+    feira_id: int
 
 class IngressoOut(IngressoBase):
     id: int

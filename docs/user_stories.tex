@@ -1,0 +1,347 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+% Configurações de página
+\geometry{margin=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Sistema de Gestão de Feiras}
+\lhead{User Stories}
+\cfoot{\thepage}
+
+% Configurações de títulos
+\titleformat{\section}{\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{1em}{}
+
+\begin{document}
+
+% Página de título
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+
+{\Huge\bfseries Especificação de Requisitos Funcionais}
+
+\vspace{0.5cm}
+
+{\LARGE User Stories}
+
+\vspace{0.5cm}
+
+{\large Sistema de Gestão de Feiras}
+
+\vspace{2cm}
+
+{\large Engenharia de Software}
+
+\vfill
+
+{\large Versão: 1.0\\
+Data: Junho 2025\\
+Documento: User Stories - Sistema de Gestão de Feiras}
+
+\end{titlepage}
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Gestão de Usuários}
+
+\subsection{US01 - Registro de Novo Usuário}
+
+\textbf{História}: Como um \textbf{visitante do sistema}, eu quero \textbf{me registrar criando uma conta}, para \textbf{acessar as funcionalidades da plataforma e gerenciar conteúdo}.
+
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+    \item O sistema deve solicitar nome, email e senha
+    \item O email deve ser único no sistema
+    \item A senha deve ser criptografada antes do armazenamento
+    \item Após registro bem-sucedido, o usuário deve receber confirmação
+    \item Em caso de email duplicado, o sistema deve exibir mensagem de erro
+    \item Todos os campos são obrigatórios
+\end{itemize}
+
+\subsection{US02 - Login de Usuário}
+
+\textbf{História}: Como um \textbf{usuário registrado}, eu quero \textbf{fazer login no sistema}, para \textbf{acessar minha conta e utilizar funcionalidades autenticadas}.
+
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+    \item O sistema deve solicitar email e senha
+    \item Credenciais válidas devem gerar um token JWT
+    \item O token deve ter expiração de 60 minutos
+    \item Credenciais inválidas devem retornar erro 400
+    \item O token deve ser retornado no formato \texttt{access\_token}
+    \item O sistema deve validar a criptografia da senha
+\end{itemize}
+
+\section{Gestão de Feiras}
+
+\subsection{US03 - Criação de Feira}
+
+\textbf{História}: Como um \textbf{organizador}, eu quero \textbf{criar uma nova feira}, para \textbf{organizar e divulgar um evento comercial}.
+
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+    \item O usuário deve estar autenticado
+    \item O sistema deve solicitar: nome, descrição, data de início, data de fim, local, cidade e estado
+    \item Todos os campos são obrigatórios
+    \item O usuário criador deve ser automaticamente associado como organizador
+    \item A feira criada deve aparecer na listagem geral
+    \item O sistema deve retornar os dados da feira criada incluindo ID
+\end{itemize}
+
+\subsection{US04 - Listagem de Feiras}
+
+\textbf{História}: Como um \textbf{usuário do sistema}, eu quero \textbf{visualizar todas as feiras disponíveis}, para \textbf{conhecer os eventos que posso participar ou visitar}.
+
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+    \item A listagem deve ser pública (sem necessidade de autenticação)
+    \item Todas as feiras cadastradas devem ser exibidas
+    \item Cada feira deve mostrar: ID, nome, descrição, datas, local, cidade, estado e ID do criador
+    \item A listagem deve ser retornada em formato JSON
+    \item Não deve haver limite de quantidade de feiras exibidas
+\end{itemize}
+
+\subsection{US05 - Edição de Feira}
+
+\textbf{História}: Como um \textbf{organizador}, eu quero \textbf{editar informações da minha feira}, para \textbf{manter os dados do evento atualizados}.
+
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+    \item Apenas o criador da feira pode editá-la
+    \item O usuário deve estar autenticado
+    \item Usuários não criadores devem receber erro 403 (sem permissão)
+    \item Todos os campos podem ser alterados: nome, descrição, datas, local, cidade, estado
+    \item O sistema deve validar a propriedade antes de permitir edição
+    \item Após edição, deve retornar mensagem de confirmação
+\end{itemize}
+
+\subsection{US06 - Exclusão de Feira}
+
+\textbf{História}: Como um \textbf{organizador}, eu quero \textbf{excluir minha feira}, para \textbf{cancelar um evento que não será mais realizado}.
+
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+    \item Apenas o criador da feira pode excluí-la
+    \item O usuário deve estar autenticado
+    \item Usuários não criadores devem receber erro 403 (sem permissão)
+    \item O sistema deve validar a propriedade antes de permitir exclusão
+    \item A feira deve ser removida permanentemente do banco de dados
+    \item Após exclusão, deve retornar mensagem de confirmação
+\end{itemize}
+
+\section{Gestão de Expositores}
+
+\subsection{US07 - Cadastro de Expositor}
+
+\textbf{História}: Como um \textbf{empreendedor}, eu quero \textbf{me cadastrar como expositor em uma feira}, para \textbf{participar do evento e apresentar meus produtos}.
+
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+    \item O usuário deve estar autenticado
+    \item O sistema deve solicitar: nome, descrição, contato e ID da feira
+    \item Todos os campos são obrigatórios
+    \item A feira especificada deve existir no sistema
+    \item O usuário criador deve ser automaticamente associado ao expositor
+    \item O expositor deve ficar vinculado à feira especificada
+\end{itemize}
+
+\subsection{US08 - Listagem de Expositores}
+
+\textbf{História}: Como um \textbf{visitante}, eu quero \textbf{visualizar os expositores de uma feira}, para \textbf{conhecer quem estará participando do evento}.
+
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+    \item A listagem deve ser pública (sem necessidade de autenticação)
+    \item Todos os expositores cadastrados devem ser exibidos
+    \item Cada expositor deve mostrar: ID, nome, descrição, contato, ID da feira e ID do criador
+    \item A listagem deve ser retornada em formato JSON
+    \item Deve ser possível filtrar expositores por feira
+\end{itemize}
+
+\subsection{US09 - Edição de Expositor}
+
+\textbf{História}: Como um \textbf{expositor}, eu quero \textbf{editar meus dados de expositor}, para \textbf{manter informações atualizadas sobre minha empresa}.
+
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+    \item Apenas o criador do expositor pode editá-lo
+    \item O usuário deve estar autenticado
+    \item Usuários não criadores devem receber erro 403 (sem permissão)
+    \item Os campos editáveis são: nome, descrição e contato
+    \item O sistema deve validar a propriedade antes de permitir edição
+    \item Após edição, deve retornar mensagem de confirmação
+\end{itemize}
+
+\subsection{US10 - Exclusão de Expositor}
+
+\textbf{História}: Como um \textbf{expositor}, eu quero \textbf{cancelar minha participação em uma feira}, para \textbf{me retirar do evento quando necessário}.
+
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+    \item Apenas o criador do expositor pode excluí-lo
+    \item O usuário deve estar autenticado
+    \item Usuários não criadores devem receber erro 403 (sem permissão)
+    \item O sistema deve validar a propriedade antes de permitir exclusão
+    \item O expositor deve ser removido permanentemente do banco de dados
+    \item Após exclusão, deve retornar mensagem de confirmação
+\end{itemize}
+
+\section{Gestão de Produtos}
+
+\subsection{US11 - Cadastro de Produto}
+
+\textbf{História}: Como um \textbf{expositor}, eu quero \textbf{cadastrar produtos no meu catálogo}, para \textbf{apresentar minha oferta aos visitantes da feira}.
+
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+    \item O usuário deve estar autenticado
+    \item O sistema deve solicitar: nome, descrição, preço e ID do expositor
+    \item Todos os campos são obrigatórios
+    \item O preço deve ser um valor numérico (float)
+    \item O expositor especificado deve existir no sistema
+    \item O usuário criador deve ser automaticamente associado ao produto
+\end{itemize}
+
+\subsection{US12 - Listagem de Produtos}
+
+\textbf{História}: Como um \textbf{visitante}, eu quero \textbf{visualizar os produtos disponíveis}, para \textbf{conhecer o que será oferecido na feira}.
+
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+    \item A listagem deve ser pública (sem necessidade de autenticação)
+    \item Todos os produtos cadastrados devem ser exibidos
+    \item Cada produto deve mostrar: ID, nome, descrição, preço, ID do expositor e ID do criador
+    \item A listagem deve ser retornada em formato JSON
+    \item Deve ser possível filtrar produtos por expositor
+\end{itemize}
+
+\subsection{US13 - Edição de Produto}
+
+\textbf{História}: Como um \textbf{expositor}, eu quero \textbf{editar informações dos meus produtos}, para \textbf{manter preços e descrições atualizados}.
+
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+    \item Apenas o criador do produto pode editá-lo
+    \item O usuário deve estar autenticado
+    \item Usuários não criadores devem receber erro 403 (sem permissão)
+    \item Os campos editáveis são: nome, descrição e preço
+    \item O sistema deve validar a propriedade antes de permitir edição
+    \item Após edição, deve retornar mensagem de confirmação
+\end{itemize}
+
+\subsection{US14 - Exclusão de Produto}
+
+\textbf{História}: Como um \textbf{expositor}, eu quero \textbf{remover produtos do meu catálogo}, para \textbf{retirar itens que não serão mais oferecidos}.
+
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+    \item Apenas o criador do produto pode excluí-lo
+    \item O usuário deve estar autenticado
+    \item Usuários não criadores devem receber erro 403 (sem permissão)
+    \item O sistema deve validar a propriedade antes de permitir exclusão
+    \item O produto deve ser removido permanentemente do banco de dados
+    \item Após exclusão, deve retornar mensagem de confirmação
+\end{itemize}
+
+\section{Gestão de Ingressos}
+
+\subsection{US15 - Emissão de Ingresso}
+
+\textbf{História}: Como um \textbf{visitante}, eu quero \textbf{adquirir um ingresso para uma feira}, para \textbf{ter acesso garantido ao evento}.
+
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+    \item O usuário deve estar autenticado
+    \item O sistema deve solicitar: número do ingresso, data de emissão e ID da feira
+    \item Todos os campos são obrigatórios
+    \item A feira especificada deve existir no sistema
+    \item O número do ingresso deve ser único
+    \item O usuário criador deve ser automaticamente associado como comprador
+    \item A data de emissão deve ser registrada automaticamente
+\end{itemize}
+
+\subsection{US16 - Listagem de Ingressos}
+
+\textbf{História}: Como um \textbf{organizador}, eu quero \textbf{visualizar os ingressos emitidos para minha feira}, para \textbf{controlar o acesso e monitorar vendas}.
+
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+    \item A listagem deve ser pública (sem necessidade de autenticação)
+    \item Todos os ingressos cadastrados devem ser exibidos
+    \item Cada ingresso deve mostrar: ID, número, data de emissão, ID da feira e ID do criador
+    \item A listagem deve ser retornada em formato JSON
+    \item Deve ser possível filtrar ingressos por feira
+\end{itemize}
+
+\subsection{US17 - Edição de Ingresso}
+
+\textbf{História}: Como um \textbf{comprador}, eu quero \textbf{editar informações do meu ingresso}, para \textbf{corrigir dados quando necessário}.
+
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+    \item Apenas o criador do ingresso pode editá-lo
+    \item O usuário deve estar autenticado
+    \item Usuários não criadores devem receber erro 403 (sem permissão)
+    \item Os campos editáveis são: número e data de emissão
+    \item O sistema deve validar a propriedade antes de permitir edição
+    \item Após edição, deve retornar mensagem de confirmação
+\end{itemize}
+
+\subsection{US18 - Cancelamento de Ingresso}
+
+\textbf{História}: Como um \textbf{comprador}, eu quero \textbf{cancelar meu ingresso}, para \textbf{desistir da participação no evento quando necessário}.
+
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+    \item Apenas o criador do ingresso pode excluí-lo
+    \item O usuário deve estar autenticado
+    \item Usuários não criadores devem receber erro 403 (sem permissão)
+    \item O sistema deve validar a propriedade antes de permitir exclusão
+    \item O ingresso deve ser removido permanentemente do banco de dados
+    \item Após exclusão, deve retornar mensagem de confirmação
+\end{itemize}
+
+\section{Segurança e Autorização}
+
+\subsection{US19 - Validação de Token JWT}
+
+\textbf{História}: Como o \textbf{sistema}, eu quero \textbf{validar tokens JWT em operações protegidas}, para \textbf{garantir que apenas usuários autenticados acessem funcionalidades restritas}.
+
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+    \item Todas as operações de criação, edição e exclusão devem exigir token válido
+    \item Tokens expirados devem ser rejeitados com erro 401
+    \item Tokens inválidos devem ser rejeitados com erro 401
+    \item O token deve ser enviado no cabeçalho Authorization como Bearer token
+    \item O sistema deve extrair o ID do usuário do token para validações de propriedade
+\end{itemize}
+
+\subsection{US20 - Controle de Propriedade}
+
+\textbf{História}: Como o \textbf{sistema}, eu quero \textbf{verificar se o usuário é proprietário do recurso}, para \textbf{permitir modificações apenas pelos criadores do conteúdo}.
+
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+    \item Operações de edição e exclusão devem verificar se o usuário é o criador
+    \item Usuários não proprietários devem receber erro 403 (sem permissão)
+    \item A verificação deve ser feita comparando o ID do usuário com o campo id\_criador
+    \item Esta validação deve aplicar-se a feiras, expositores, produtos e ingressos
+    \item O sistema deve retornar mensagem clara sobre falta de permissão
+\end{itemize}
+
+\end{document} 

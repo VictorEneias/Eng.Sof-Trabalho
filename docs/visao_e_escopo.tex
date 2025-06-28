@@ -1,0 +1,306 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+% Configurações de página
+\geometry{margin=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Sistema de Gestão de Feiras}
+\lhead{Documento de Visão e Escopo}
+\cfoot{\thepage}
+
+% Configurações de títulos
+\titleformat{\section}{\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{1em}{}
+
+\begin{document}
+
+% Página de título
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+
+{\Huge\bfseries Documento de Visão e Escopo}
+
+\vspace{0.5cm}
+
+{\LARGE Sistema de Gestão de Feiras}
+
+\vspace{2cm}
+
+{\large Engenharia de Software}
+
+\vfill
+
+{\large Versão: 1.0\\
+Data: Junho 2025\\
+Documento: Visão e Escopo - Sistema de Gestão de Feiras}
+
+\end{titlepage}
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Objetivo do Sistema}
+
+O Sistema de Gestão de Feiras é uma plataforma web desenvolvida para facilitar a organização, administração e participação em eventos comerciais do tipo feira. O sistema permite que organizadores criem e gerenciem eventos, expositores se cadastrem para participar apresentando seus produtos, e visitantes adquiram ingressos de acesso aos eventos.
+
+A plataforma centraliza todas as operações relacionadas a feiras comerciais em uma única interface digital, proporcionando controle total do ciclo de vida do evento desde sua criação até a emissão de ingressos para visitantes.
+
+\section{Problema que Resolve}
+
+O sistema resolve a complexidade e fragmentação na gestão de eventos do tipo feira, onde tradicionalmente:
+
+\begin{itemize}
+    \item \textbf{Organizadores} enfrentam dificuldades para centralizar informações sobre o evento, controlar participantes e gerenciar ingressos
+    \item \textbf{Expositores} precisam lidar com processos manuais ou sistemas isolados para se cadastrar em eventos e apresentar seus produtos
+    \item \textbf{Visitantes} não possuem uma forma padronizada e digital de adquirir ingressos e conhecer previamente os expositores e produtos disponíveis
+    \item \textbf{Administração geral} carece de visibilidade integrada sobre todos os aspectos do evento
+\end{itemize}
+
+A ausência de uma plataforma unificada resulta em processos ineficientes, informações dispersas e experiência fragmentada para todos os envolvidos no ecossistema de feiras comerciais.
+
+\section{Justificativa do Projeto}
+
+O desenvolvimento deste sistema é justificado pelos seguintes fatores:
+
+\subsection{Digitalização de Processos}
+A crescente necessidade de digitalização de eventos presenciais, acelerada por mudanças no comportamento do consumidor e demandas por eficiência operacional.
+
+\subsection{Centralização de Informações}
+Eliminação da dispersão de dados entre planilhas, sistemas isolados e processos manuais, proporcionando uma fonte única de verdade para todos os stakeholders.
+
+\subsection{Melhoria da Experiência do Usuário}
+Simplificação dos processos para organizadores, expositores e visitantes através de interfaces intuitivas e fluxos otimizados.
+
+\subsection{Controle e Segurança}
+Implementação de autenticação robusta e autorização baseada em propriedade, garantindo que apenas usuários autorizados possam modificar informações específicas.
+
+\subsection{Escalabilidade e Padronização}
+Criação de uma base tecnológica moderna que pode ser replicada para diferentes tipos de feira e expandida conforme necessidades futuras.
+
+\section{Stakeholders}
+
+\subsection{Stakeholders Primários}
+
+\subsubsection{Organizadores de Feira}
+\begin{itemize}
+    \item \textbf{Perfil}: Empresas, entidades ou pessoas responsáveis pela criação e gestão de eventos
+    \item \textbf{Necessidades}: Criar feiras, definir informações do evento (datas, local, descrição), controlar expositores participantes e monitorar ingressos emitidos
+    \item \textbf{Benefícios}: Visão centralizada do evento, controle total sobre participantes e automação do processo de gestão
+\end{itemize}
+
+\subsubsection{Expositores}
+\begin{itemize}
+    \item \textbf{Perfil}: Empresas, empreendedores ou artesãos que desejam participar de feiras para apresentar produtos ou serviços
+    \item \textbf{Necessidades}: Cadastrar-se em feiras de interesse, apresentar informações da empresa, exibir catálogo de produtos com preços
+    \item \textbf{Benefícios}: Processo simplificado de participação, vitrine digital para produtos, maior visibilidade
+\end{itemize}
+
+\subsubsection{Visitantes}
+\begin{itemize}
+    \item \textbf{Perfil}: Público geral interessado em visitar feiras, conhecer produtos e adquirir ingressos
+    \item \textbf{Necessidades}: Visualizar feiras disponíveis, conhecer expositores e produtos, adquirir ingressos de acesso
+    \item \textbf{Benefícios}: Acesso digital a informações do evento, processo simplificado de aquisição de ingressos, conhecimento prévio do que encontrará no evento
+\end{itemize}
+
+\subsection{Stakeholders Secundários}
+
+\subsubsection{Desenvolvedores}
+\begin{itemize}
+    \item \textbf{Perfil}: Equipe técnica responsável pela manutenção e evolução do sistema
+    \item \textbf{Necessidades}: Código bem estruturado, documentação técnica, arquitetura escalável
+    \item \textbf{Benefícios}: Base de código organizada com separação clara de responsabilidades
+\end{itemize}
+
+\subsubsection{Equipe de Infraestrutura}
+\begin{itemize}
+    \item \textbf{Perfil}: Profissionais responsáveis pela operação e monitoramento do sistema em produção
+    \item \textbf{Necessidades}: Sistema estável, logs adequados, facilidade de deployment
+    \item \textbf{Benefícios}: Aplicação com dependências bem definidas e configuração simplificada
+\end{itemize}
+
+\subsubsection{Auditores e Compliance}
+\begin{itemize}
+    \item \textbf{Perfil}: Responsáveis por verificar conformidade com regulamentações e segurança
+    \item \textbf{Necessidades}: Logs de auditoria, controles de acesso, proteção de dados pessoais
+    \item \textbf{Benefícios}: Sistema com autenticação robusta e autorização baseada em propriedade
+\end{itemize}
+
+\section{Funcionalidades de Alto Nível}
+
+\subsection{Gestão de Usuários}
+\begin{itemize}
+    \item Registro de novos usuários com validação de email único
+    \item Autenticação segura via credenciais email/senha
+    \item Geração e validação de tokens JWT para sessões
+\end{itemize}
+
+\subsection{Gestão de Feiras}
+\begin{itemize}
+    \item Criação de eventos com informações completas (nome, descrição, datas, localização)
+    \item Listagem pública de feiras disponíveis
+    \item Edição e exclusão de feiras pelos organizadores criadores
+\end{itemize}
+
+\subsection{Gestão de Expositores}
+\begin{itemize}
+    \item Cadastro de expositores em feiras específicas
+    \item Armazenamento de informações empresariais e contato
+    \item Controle de participação por feira
+\end{itemize}
+
+\subsection{Gestão de Produtos}
+\begin{itemize}
+    \item Cadastro de produtos pelos expositores
+    \item Informações detalhadas incluindo nome, descrição e preço
+    \item Catálogo digital associado a cada expositor
+\end{itemize}
+
+\subsection{Gestão de Ingressos}
+\begin{itemize}
+    \item Emissão de ingressos únicos para feiras específicas
+    \item Controle de data de emissão
+    \item Associação de ingressos a usuários compradores
+\end{itemize}
+
+\subsection{Controle de Autorização}
+\begin{itemize}
+    \item Restrição de edição/exclusão apenas para criadores de conteúdo
+    \item Validação de propriedade em todas as operações sensíveis
+    \item Proteção contra modificações não autorizadas
+\end{itemize}
+
+\section{Restrições e Dependências}
+
+\subsection{Tecnológicas}
+
+\subsubsection{Backend}
+\begin{itemize}
+    \item \textbf{FastAPI}: Framework web Python para desenvolvimento da API REST
+    \item \textbf{SQLAlchemy}: ORM para mapeamento objeto-relacional e abstração do banco de dados
+    \item \textbf{Pydantic}: Biblioteca para validação de dados e serialização
+    \item \textbf{PassLib[bcrypt]}: Criptografia de senhas com algoritmo BCrypt
+    \item \textbf{Python-JOSE}: Implementação de tokens JWT para autenticação stateless
+\end{itemize}
+
+\subsubsection{Frontend}
+\begin{itemize}
+    \item \textbf{React.js}: Biblioteca JavaScript para construção da interface de usuário
+    \item \textbf{JavaScript ES6+}: Linguagem de programação para lógica do frontend
+    \item \textbf{Fetch API}: Comunicação HTTP nativa do navegador para integração com backend
+\end{itemize}
+
+\subsubsection{Banco de Dados}
+\begin{itemize}
+    \item \textbf{SQLite}: Sistema de banco de dados relacional embarcado para desenvolvimento e testes
+    \item \textbf{Integridade Referencial}: Chaves estrangeiras garantindo consistência entre entidades
+\end{itemize}
+
+\subsection{Segurança e Autenticação}
+\begin{itemize}
+    \item \textbf{JWT (JSON Web Tokens)}: Tokens com expiração de 60 minutos
+    \item \textbf{CORS (Cross-Origin Resource Sharing)}: Configurado para permitir acesso do frontend
+    \item \textbf{Autorização por Propriedade}: Apenas criadores podem modificar seus próprios registros
+\end{itemize}
+
+\subsection{Infraestrutura Mínima}
+\begin{itemize}
+    \item \textbf{Python 3.8+}: Runtime mínimo para execução do backend
+    \item \textbf{Navegador Web Moderno}: Suporte a ES6+ e Fetch API para frontend
+    \item \textbf{Servidor Web}: Uvicorn ou similar para servir aplicação FastAPI
+    \item \textbf{Armazenamento}: Espaço para banco SQLite e arquivos da aplicação
+\end{itemize}
+
+\subsection{Dependências Operacionais}
+\begin{itemize}
+    \item \textbf{Conectividade de Rede}: Para comunicação entre frontend e backend
+    \item \textbf{Persistência de Dados}: Banco de dados para armazenamento permanente
+    \item \textbf{Gerenciamento de Sessão}: LocalStorage do navegador para tokens JWT
+\end{itemize}
+
+\section{Contexto do Domínio}
+
+\subsection{Conceitos Fundamentais}
+
+\subsubsection{Feira}
+Uma \textbf{feira} é um evento comercial temporário caracterizado por:
+\begin{itemize}
+    \item \textbf{Duração limitada}: Possui data de início e fim bem definidas
+    \item \textbf{Local físico}: Acontece em espaço específico (centro de convenções, praças, pavilhões)
+    \item \textbf{Finalidade comercial}: Visa promover produtos, serviços ou conhecimento
+    \item \textbf{Organização centralizada}: Possui um responsável que coordena o evento
+\end{itemize}
+
+\textbf{Exemplo prático}: ``Feira de Tecnologia São Paulo 2025'' acontecendo de 15 a 17 de junho no Centro de Convenções Rebouças, organizada pela empresa TechEvents.
+
+\subsubsection{Expositor}
+Um \textbf{expositor} é uma entidade (empresa, empreendedor, artesão) que participa da feira para:
+\begin{itemize}
+    \item \textbf{Apresentar produtos ou serviços}: Demonstrar seu portfólio ao público
+    \item \textbf{Estabelecer contatos comerciais}: Networking com visitantes e outros expositores
+    \item \textbf{Gerar vendas}: Comercializar diretamente ou captar leads
+    \item \textbf{Divulgar marca}: Aumentar visibilidade e reconhecimento
+\end{itemize}
+
+\textbf{Exemplo prático}: A empresa ``TechSolutions'' se cadastra como expositora na Feira de Tecnologia para apresentar seus softwares de gestão empresarial.
+
+\subsubsection{Produto}
+Um \textbf{produto} representa itens oferecidos pelos expositores:
+\begin{itemize}
+    \item \textbf{Tangíveis}: Equipamentos, artesanatos, alimentos, vestuário
+    \item \textbf{Intangíveis}: Softwares, serviços, consultorias
+    \item \textbf{Informações essenciais}: Nome, descrição detalhada e preço
+    \item \textbf{Catálogo digital}: Permite visitantes conhecerem a oferta antes da visita
+\end{itemize}
+
+\textbf{Exemplo prático}: A TechSolutions cadastra o produto ``ERP Empresarial v2.0'' com descrição ``Sistema integrado de gestão'' e preço ``R\$ 5.000,00''.
+
+\subsubsection{Visitante e Ingresso}
+\textbf{Visitantes} são o público-alvo das feiras, e \textbf{ingressos} controlam seu acesso:
+\begin{itemize}
+    \item \textbf{Identificação única}: Cada ingresso possui número exclusivo para controle
+    \item \textbf{Associação ao evento}: Ingressos são específicos para uma feira
+    \item \textbf{Controle de acesso}: Permite entrada apenas de pessoas autorizadas
+    \item \textbf{Rastreabilidade}: Data de emissão e comprador são registrados
+\end{itemize}
+
+\textbf{Exemplo prático}: João Silva adquire o ingresso \#ABC123 para a Feira de Tecnologia, emitido em 10/06/2025, permitindo sua entrada no evento.
+
+\subsection{Fluxo Operacional Típico}
+
+\begin{enumerate}
+    \item \textbf{Criação do Evento}: Organizador cadastra nova feira definindo todas as informações básicas
+    \item \textbf{Divulgação}: Feira fica disponível publicamente para consulta
+    \item \textbf{Adesão de Expositores}: Empresas interessadas se cadastram para participar
+    \item \textbf{Cadastro de Produtos}: Expositores montam seus catálogos digitais
+    \item \textbf{Venda de Ingressos}: Visitantes adquirem acesso ao evento
+    \item \textbf{Realização da Feira}: Evento acontece conforme planejado
+    \item \textbf{Controle de Acesso}: Ingressos são validados na entrada
+\end{enumerate}
+
+\subsection{Relacionamentos entre Entidades}
+
+\begin{itemize}
+    \item \textbf{Organizador → Feira}: Um organizador pode criar múltiplas feiras (1:N)
+    \item \textbf{Feira → Expositor}: Uma feira pode ter vários expositores (1:N)
+    \item \textbf{Expositor → Produto}: Um expositor pode oferecer múltiplos produtos (1:N)
+    \item \textbf{Feira → Ingresso}: Uma feira pode ter vários ingressos emitidos (1:N)
+    \item \textbf{Usuário → Múltiplos Papéis}: Um usuário pode ser organizador, expositor e visitante simultaneamente
+\end{itemize}
+
+Este contexto garante que o sistema atenda às necessidades reais do domínio de feiras comerciais, proporcionando uma solução completa e integrada para todos os stakeholders envolvidos.
+
+\end{document}
