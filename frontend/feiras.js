@@ -9,7 +9,7 @@ import Expositores from './expositores.js';
 import Produtos from './produtos.js';
 import Ingressos from './ingressos.js';
 
-export default function Feiras() {
+export default function Feiras({ token }) {
   const [feiras, setFeiras] = React.useState([]);
   const [selecionada, setSelecionada] = React.useState(null);
   const [expositorSel, setExpositorSel] = React.useState(null);
@@ -52,7 +52,7 @@ export default function Feiras() {
 
   return e('div', null,
     e('h3', null, 'Feiras'),
-    e('form', { onSubmit: criar },
+    token && e('form', { onSubmit: criar },
       Object.keys(form).map(campo =>
         e('input', {
           key: campo,
@@ -67,9 +67,9 @@ export default function Feiras() {
     selecionada && e('div', null,
       e('h4', null, selecionada.nome),
       e('pre', null, JSON.stringify(selecionada, null, 2)),
-      e('button', { onClick: () => excluir(selecionada.id) }, 'Excluir'),
-      !editForm && e('button', { onClick: () => setEditForm(selecionada) }, 'Editar'),
-      editForm && e('form', { onSubmit: salvarEdicao },
+      token && e('button', { onClick: () => excluir(selecionada.id) }, 'Excluir'),
+      token && !editForm && e('button', { onClick: () => setEditForm(selecionada) }, 'Editar'),
+      token && editForm && e('form', { onSubmit: salvarEdicao },
         Object.keys(editForm).filter(k => k !== 'id' && k !== 'id_criador').map(campo =>
           e('input', {
             key: campo,
@@ -79,15 +79,15 @@ export default function Feiras() {
         ),
         e('button', { type: 'submit' }, 'Salvar')
       ),
-      e(Ingressos, { feiraId: selecionada.id }),
-      e(Expositores, { feiraId: selecionada.id, onSelect: async exp => {
+      e(Ingressos, { feiraId: selecionada.id, token }),
+      e(Expositores, { feiraId: selecionada.id, token, onSelect: async exp => {
         const det = await api(`/expositores/${exp.id}`);
         setExpositorSel(det);
       } }),
       expositorSel && e('div', null,
         e('h5', null, expositorSel.nome),
         e('pre', null, JSON.stringify(expositorSel, null, 2)),
-        e(Produtos, { expositorId: expositorSel.id })
+        e(Produtos, { expositorId: expositorSel.id, token })
       )
     )
   );
