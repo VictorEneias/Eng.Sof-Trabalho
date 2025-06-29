@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, Header
 from sqlalchemy.orm import Session
 from database import SessionLocal
-from models import Feira
-from schemas import FeiraCreate, FeiraOut
+from models import Feira, Expositor, Ingresso
+from schemas import FeiraCreate, FeiraOut, ExpositorOut
 from auth import verificar_token
 from datetime import date
 
@@ -34,6 +34,17 @@ def criar_feira(feira: FeiraCreate, db: Session = Depends(get_db), usuario_id: i
 def listar_feiras(db: Session = Depends(get_db)):
     return db.query(Feira).all()
 
+@router.get("/{feira_id}", response_model=FeiraOut)
+def obter_feira(feira_id: int, db: Session = Depends(get_db)):
+    feira = db.query(Feira).get(feira_id)
+    if not feira:
+        raise HTTPException(status_code=404, detail="Feira não encontrada")
+    return feira
+
+@router.get("/{feira_id}/expositores", response_model=list[ExpositorOut])
+def expositores_da_feira(feira_id: int, db: Session = Depends(get_db)):
+    return db.query(Expositor).filter(Expositor.feira_id == feira_id).all()
+
 @router.put("/{feira_id}")
 def editar_feira(feira_id: int, feira: FeiraCreate, db: Session = Depends(get_db), usuario_id: int = Depends(get_usuario_id)):
     feira_db = db.query(Feira).get(feira_id)
@@ -49,6 +60,10 @@ def excluir_feira(feira_id: int, db: Session = Depends(get_db), usuario_id: int 
     feira = db.query(Feira).get(feira_id)
     if not feira or feira.id_criador != usuario_id:
         raise HTTPException(status_code=403, detail="Sem permissão")
+    if db.query(Expositor).filter(Expositor.feira_id == feira_id).first():
+        raise HTTPException(status_code=400, detail="Feira possui expositores")
+    if db.query(Ingresso).filter(Ingresso.feira_id == feira_id).first():
+        raise HTTPException(status_code=400, detail="Feira possui ingressos")
     db.delete(feira)
     db.commit()
     return {"msg": "Feira excluída"}

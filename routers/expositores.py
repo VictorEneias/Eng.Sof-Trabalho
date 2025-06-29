@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, Header
 from sqlalchemy.orm import Session
 from database import SessionLocal
-from models import Expositor
-from schemas import ExpositorCreate, ExpositorOut
+from models import Expositor, Produto
+from schemas import ExpositorCreate, ExpositorOut, ProdutoOut
 from auth import verificar_token
 
 router = APIRouter(prefix="/expositores", tags=["Expositores"])
@@ -33,6 +33,17 @@ def criar_expositor(expositor: ExpositorCreate, db: Session = Depends(get_db), u
 def listar_expositores(db: Session = Depends(get_db)):
     return db.query(Expositor).all()
 
+@router.get("/{expositor_id}", response_model=ExpositorOut)
+def obter_expositor(expositor_id: int, db: Session = Depends(get_db)):
+    e = db.query(Expositor).get(expositor_id)
+    if not e:
+        raise HTTPException(status_code=404, detail="Expositor não encontrado")
+    return e
+
+@router.get("/{expositor_id}/produtos", response_model=list[ProdutoOut])
+def produtos_do_expositor(expositor_id: int, db: Session = Depends(get_db)):
+    return db.query(Produto).filter(Produto.expositor_id == expositor_id).all()
+
 @router.put("/{expositor_id}")
 def editar_expositor(expositor_id: int, expositor: ExpositorCreate, db: Session = Depends(get_db), usuario_id: int = Depends(get_usuario_id)):
     e = db.query(Expositor).get(expositor_id)
@@ -48,6 +59,8 @@ def excluir_expositor(expositor_id: int, db: Session = Depends(get_db), usuario_
     e = db.query(Expositor).get(expositor_id)
     if not e or e.id_criador != usuario_id:
         raise HTTPException(status_code=403, detail="Sem permissão")
+    if db.query(Produto).filter(Produto.expositor_id == expositor_id).first():
+        raise HTTPException(status_code=400, detail="Expositor possui produtos")
     db.delete(e)
     db.commit()
     return {"msg": "Expositor excluído"}

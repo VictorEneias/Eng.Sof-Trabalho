@@ -6,7 +6,7 @@ export default function Produtos({ expositorId }) {
 
   React.useEffect(() => {
     if (expositorId) {
-      api('/produtos').then(data => setLista(data.filter(p => p.expositor_id === expositorId)));
+      api(`/expositores/${expositorId}/produtos`).then(setLista);
     }
   }, [expositorId]);
 

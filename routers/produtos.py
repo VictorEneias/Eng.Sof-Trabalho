@@ -33,6 +33,13 @@ def criar_produto(produto: ProdutoCreate, db: Session = Depends(get_db), usuario
 def listar_produtos(db: Session = Depends(get_db)):
     return db.query(Produto).all()
 
+@router.get("/{produto_id}", response_model=ProdutoOut)
+def obter_produto(produto_id: int, db: Session = Depends(get_db)):
+    p = db.query(Produto).get(produto_id)
+    if not p:
+        raise HTTPException(status_code=404, detail="Produto não encontrado")
+    return p
+
 @router.put("/{produto_id}")
 def editar_produto(produto_id: int, produto: ProdutoCreate, db: Session = Depends(get_db), usuario_id: int = Depends(get_usuario_id)):
     p = db.query(Produto).get(produto_id)
