@@ -1,7 +1,7 @@
 import { api } from './api.js';
 const e = React.createElement;
 
-export default function Expositores({ feiraId, onSelect }) {
+export default function Expositores({ feiraId, onSelect, token }) {
   const [lista, setLista] = React.useState([]);
   const [novo, setNovo] = React.useState({ nome: '', descricao: '', contato: '' });
   const [edit, setEdit] = React.useState(null);
@@ -40,7 +40,7 @@ export default function Expositores({ feiraId, onSelect }) {
 
   return e('div', null,
     e('h5', null, 'Expositores'),
-    e('form', { onSubmit: criar },
+    token && e('form', { onSubmit: criar },
       ['nome', 'descricao', 'contato'].map(c =>
         e('input', {
           key: c,
@@ -56,12 +56,12 @@ export default function Expositores({ feiraId, onSelect }) {
         e('li', { key: exp.id },
           e('span', { onClick: () => onSelect && onSelect(exp) }, exp.nome),
           ' ',
-          e('button', { onClick: () => setEdit(exp) }, 'Editar'),
-          e('button', { onClick: () => excluir(exp.id) }, 'Excluir')
+          token && e('button', { onClick: () => setEdit(exp) }, 'Editar'),
+          token && e('button', { onClick: () => excluir(exp.id) }, 'Excluir')
         )
       )
     ),
-    edit && e('form', { onSubmit: salvar },
+    token && edit && e('form', { onSubmit: salvar },
       ['nome', 'descricao', 'contato'].map(c =>
         e('input', {
           key: c,

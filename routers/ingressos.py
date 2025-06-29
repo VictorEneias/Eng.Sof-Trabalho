@@ -30,8 +30,7 @@ def criar_ingresso(ingresso: IngressoCreate, db: Session = Depends(get_db), usua
         raise HTTPException(status_code=404, detail="Feira não encontrada")
     novo = Ingresso(
         feira_id=ingresso.feira_id,
-        data_emissao=date.today(),
-        nome_feira=feira.nome,
+        data_emissao=ingresso.data_emissao or date.today(),
         numero=str(uuid.uuid4()),
         id_criador=usuario_id
     )

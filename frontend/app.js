@@ -1,4 +1,4 @@
-import { api, setToken, getToken, logout } from './api.js';
+import { setToken, getToken, logout } from './api.js';
 import Login from './login.js';
 import Feiras from './feiras.js';
 
@@ -18,8 +18,8 @@ function App() {
   }
 
   return e('div', null,
-    token ? e('button', { onClick: handleLogout }, 'Sair') : null,
-    token ? e(Feiras, { token }) : e(Login, { onLogin: handleLogin })
+    token ? e('button', { onClick: handleLogout }, 'Sair') : e(Login, { onLogin: handleLogin }),
+    e(Feiras, { token })
   );
 }
 
