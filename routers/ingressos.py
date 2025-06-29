@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, Header
 from sqlalchemy.orm import Session
 from database import SessionLocal
-from models import Ingresso
+from models import Ingresso, Feira
 from schemas import IngressoCreate, IngressoOut
 from auth import verificar_token
 import uuid
+from datetime import date
 
 router = APIRouter(prefix="/ingressos", tags=["Ingressos"])
 
@@ -24,8 +25,13 @@ def get_usuario_id(authorization: str = Header(...)):
 
 @router.post("/", response_model=IngressoOut)
 def criar_ingresso(ingresso: IngressoCreate, db: Session = Depends(get_db), usuario_id: int = Depends(get_usuario_id)):
+    feira = db.query(Feira).get(ingresso.feira_id)
+    if not feira:
+        raise HTTPException(status_code=404, detail="Feira não encontrada")
     novo = Ingresso(
-        **ingresso.dict(),
+        feira_id=ingresso.feira_id,
+        data_emissao=date.today(),
+        nome_feira=feira.nome,
         numero=str(uuid.uuid4()),
         id_criador=usuario_id
     )

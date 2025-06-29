@@ -69,11 +69,12 @@ class ProdutoOut(ProdutoBase):
 class IngressoBase(BaseModel):
     numero: str
     data_emissao: date
+    nome_feira: str
     feira_id: int
 
 class IngressoCreate(BaseModel):
-    data_emissao: date
     feira_id: int
+    data_emissao: Optional[date] = None
 
 class IngressoOut(IngressoBase):
     id: int

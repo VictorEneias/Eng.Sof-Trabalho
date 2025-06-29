@@ -44,5 +44,6 @@ class Ingresso(Base):
     id = Column(Integer, primary_key=True)
     numero = Column(String)  # UUID
     data_emissao = Column(Date)
+    nome_feira = Column(String)
     feira_id = Column(Integer, ForeignKey("feiras.id"))
     id_criador = Column(Integer, ForeignKey("usuarios.id"))
