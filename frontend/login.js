@@ -1,4 +1,4 @@
-import { api } from './api.js';
+import { api } from './api.js?v=2';
 const e = React.createElement;
 
 export default function Login({ onLogin }) {
@@ -47,35 +47,100 @@ async function handleSubmit(evt) {
 }
 
 
-  return e('form', { onSubmit: handleSubmit },
-    e('h3', null, registrar ? 'Registrar' : 'Login'),
-    erro ? e('div', { style: { color: 'red' } }, erro) : null,
-    registrar && e('input', {
-      placeholder: 'Nome',
-      value: nome,
-      onChange: e => setNome(e.target.value)
-    }),
-    e('input', {
-      placeholder: 'Email',
-      value: email,
-      onChange: e => setEmail(e.target.value)
-    }),
-    e('input', {
-      type: 'password',
-      placeholder: 'Senha',
-      value: senha,
-      onChange: e => setSenha(e.target.value)
-    }),
-    e('button', { type: 'submit' }, registrar ? 'Registrar' : 'Entrar'),
-    e('div', null,
-      e('a', {
-        href: '#',
-        onClick: evt => {
-          evt.preventDefault();
-          setRegistrar(!registrar);
-          setErro('');
-        }
-      }, registrar ? 'Já tenho conta' : 'Criar conta')
+  return e('div', { className: 'login-container' },
+    e('div', { className: 'login-card' },
+      e('div', { className: 'logo' },
+        e('h1', null, 'Sistema de Gestão de Feiras')
+      ),
+      
+      e('div', { className: 'auth-tabs' },
+        e('button', {
+          className: `tab-btn ${!registrar ? 'active' : ''}`,
+          onClick: () => {
+            setRegistrar(false);
+            setErro('');
+          }
+        }, 'Entrar'),
+        e('button', {
+          className: `tab-btn ${registrar ? 'active' : ''}`,
+          onClick: () => {
+            setRegistrar(true);
+            setErro('');
+          }
+        }, 'Registrar')
+      ),
+      
+      e('form', { 
+        className: `auth-form ${registrar ? 'hidden' : ''}`,
+        onSubmit: handleSubmit 
+      },
+        e('div', { className: 'form-group' },
+          e('input', {
+            type: 'email',
+            className: 'form-control',
+            placeholder: 'Email',
+            value: email,
+            onChange: e => setEmail(e.target.value),
+            required: true
+          })
+        ),
+        e('div', { className: 'form-group' },
+          e('input', {
+            type: 'password',
+            className: 'form-control',
+            placeholder: 'Senha',
+            value: senha,
+            onChange: e => setSenha(e.target.value),
+            required: true
+          })
+        ),
+        e('button', { 
+          type: 'submit', 
+          className: 'btn btn-primary btn-full' 
+        }, 'Entrar')
+      ),
+      
+      e('form', { 
+        className: `auth-form ${!registrar ? 'hidden' : ''}`,
+        onSubmit: handleSubmit 
+      },
+        e('div', { className: 'form-group' },
+          e('input', {
+            type: 'text',
+            className: 'form-control',
+            placeholder: 'Nome completo',
+            value: nome,
+            onChange: e => setNome(e.target.value),
+            required: true
+          })
+        ),
+        e('div', { className: 'form-group' },
+          e('input', {
+            type: 'email',
+            className: 'form-control',
+            placeholder: 'Email',
+            value: email,
+            onChange: e => setEmail(e.target.value),
+            required: true
+          })
+        ),
+        e('div', { className: 'form-group' },
+          e('input', {
+            type: 'password',
+            className: 'form-control',
+            placeholder: 'Senha',
+            value: senha,
+            onChange: e => setSenha(e.target.value),
+            required: true
+          })
+        ),
+        e('button', { 
+          type: 'submit', 
+          className: 'btn btn-primary btn-full' 
+        }, 'Registrar')
+      ),
+      
+      erro ? e('div', { className: 'error-message' }, erro) : null
     )
   );
 }
