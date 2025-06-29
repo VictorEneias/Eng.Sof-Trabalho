@@ -1,0 +1,16 @@
+sequenceDiagram
+    participant U as Usuario
+    participant F as Frontend
+    participant A as API
+    participant DB as Database
+    
+    U->>F: Insere credenciais
+    F->>A: POST /usuarios/login
+    A->>DB: Valida email/senha
+    DB-->>A: Usuario encontrado
+    A->>A: Gera token JWT
+    A-->>F: {access_token: "jwt..."}
+    F->>F: Armazena token (LocalStorage)
+    F-->>U: Redireciona para dashboard
+    
+    Note over F,A: Token incluído em todas<br/>as requisições subsequentes 

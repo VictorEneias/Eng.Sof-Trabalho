@@ -1,0 +1,18 @@
+sequenceDiagram
+    participant U as Usuario
+    participant F as Frontend
+    participant A as API
+    participant AUTH as Auth Module
+    participant DB as Database
+    
+    U->>F: Solicita edição de feira
+    F->>A: PUT /feiras/123 (com token)
+    A->>AUTH: Extrai usuario_id do token
+    AUTH-->>A: usuario_id = 456
+    A->>DB: Busca feira (ID: 123)
+    DB-->>A: feira.id_criador = 789
+    A->>A: Compara: 456 != 789
+    A-->>F: HTTP 403 Forbidden
+    F-->>U: "Sem permissão para editar"
+    
+    Note over A: Apenas o criador (789)<br/>pode editar esta feira 

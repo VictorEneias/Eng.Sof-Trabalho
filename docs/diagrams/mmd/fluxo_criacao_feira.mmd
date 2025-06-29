@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant U as Usuario
+    participant F as Frontend
+    participant A as API
+    participant AUTH as Auth Module
+    participant DB as Database
+    
+    U->>F: Preenche formulário de feira
+    F->>A: POST /feiras/ (com token)
+    A->>AUTH: Verifica token JWT
+    AUTH-->>A: usuario_id válido
+    A->>A: Valida dados (Pydantic)
+    A->>DB: Cria feira com id_criador
+    DB-->>A: Feira criada (ID: 123)
+    A-->>F: Dados da feira criada
+    F->>F: Atualiza lista de feiras
+    F-->>U: Exibe feira criada 

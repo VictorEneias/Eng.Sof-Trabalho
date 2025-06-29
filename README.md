@@ -6,6 +6,13 @@
 [![SQLite](https://img.shields.io/badge/SQLite-3+-lightgrey.svg)](https://sqlite.org)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+## 👥 Autores
+
+- **Higor Roger de Freitas Santos** - 221006440
+- **Victor Eneias Oliveira** - 221038364
+
+**Trabalho realizado para a matéria:** Engenharia de Software CIC0105 Turma 01 2025.1
+
 ## 📋 Visão Geral
 
 O **Sistema de Gestão de Feiras** é uma plataforma web completa desenvolvida para facilitar a organização, administração e participação em eventos comerciais do tipo feira. O sistema permite que organizadores criem e gerenciem eventos, expositores se cadastrem para participar apresentando seus produtos, e visitantes adquiram ingressos de acesso aos eventos.

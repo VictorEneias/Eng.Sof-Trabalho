@@ -1,0 +1,30 @@
+graph TB
+    subgraph "Cliente (Browser)"
+        UI[React.js SPA]
+        LS[LocalStorage]
+    end
+    
+    subgraph "Servidor de Aplicação"
+        API[FastAPI Server]
+        AUTH[JWT Auth Module]
+        ROUTES[Routers Module]
+        MODELS[SQLAlchemy Models]
+        SCHEMAS[Pydantic Schemas]
+    end
+    
+    subgraph "Persistência"
+        DB[(SQLite Database)]
+    end
+    
+    UI -->|HTTP/JSON| API
+    UI -->|Store Token| LS
+    LS -->|Retrieve Token| UI
+    API --> AUTH
+    API --> ROUTES
+    ROUTES --> MODELS
+    ROUTES --> SCHEMAS
+    MODELS --> DB
+    
+    style UI fill:#e1f5fe
+    style API fill:#f3e5f5
+    style DB fill:#e8f5e8 

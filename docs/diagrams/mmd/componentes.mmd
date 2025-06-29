@@ -1,0 +1,39 @@
+graph TB
+    subgraph "Frontend Layer"
+        APP[App Component]
+        LOGIN[Login Component]
+        FEIRAS[Feiras Component]
+        API_CLIENT[API Client]
+    end
+    
+    subgraph "Backend Layer"
+        MAIN[FastAPI Main]
+        ROUTERS[Router Modules]
+        AUTH_MOD[Auth Module]
+        SCHEMAS[Pydantic Schemas]
+        CRUD[CRUD Operations]
+    end
+    
+    subgraph "Data Layer"
+        MODELS[SQLAlchemy Models]
+        DATABASE[Database Config]
+        SQLITE[(SQLite DB)]
+    end
+    
+    APP --> LOGIN
+    APP --> FEIRAS
+    LOGIN --> API_CLIENT
+    FEIRAS --> API_CLIENT
+    API_CLIENT -->|HTTP/JSON| MAIN
+    
+    MAIN --> ROUTERS
+    ROUTERS --> AUTH_MOD
+    ROUTERS --> SCHEMAS
+    ROUTERS --> CRUD
+    CRUD --> MODELS
+    MODELS --> DATABASE
+    DATABASE --> SQLITE
+    
+    style APP fill:#e3f2fd
+    style MAIN fill:#f3e5f5
+    style SQLITE fill:#e8f5e8 

@@ -1,0 +1,172 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{xcolor}
+
+\geometry{margin=2.5cm}
+\titleformat{\section}{\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{1em}{}
+
+\title{\textbf{Especificação de Requisitos Não Funcionais (RNFs)}\\
+\large Sistema de Gestão de Feiras}
+\author{Higor Roger de Freitas Santos - 221006440\\
+Victor Eneias Oliveira - 221038364\\
+\\
+Engenharia de Software CIC0105 Turma 01 2025.1}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\section{Requisitos de Segurança}
+
+\subsection{RNF01 - Autenticação JWT}
+
+\textbf{Descrição}: O sistema deve implementar autenticação usando tokens JWT para garantir a identidade dos usuários.
+
+\textbf{Implementação}:
+\begin{itemize}
+    \item Tokens JWT gerados no login com expiração de 60 minutos
+    \item Validação de token em endpoints protegidos
+    \item Retorno de erro 401 para tokens inválidos ou expirados
+\end{itemize}
+
+\textbf{Critério de Aceitação}: Login bem-sucedido gera token válido que permite acesso a funcionalidades protegidas. Tokens expirados ou inválidos são rejeitados.
+
+\subsection{RNF02 - Criptografia de Senhas}
+
+\textbf{Descrição}: O sistema deve armazenar senhas de forma segura usando criptografia.
+
+\textbf{Implementação}:
+\begin{itemize}
+    \item Senhas criptografadas com BCrypt antes do armazenamento
+    \item Verificação segura durante o login
+    \item Senhas nunca armazenadas em texto plano
+\end{itemize}
+
+\textbf{Critério de Aceitação}: Todas as senhas no banco de dados estão criptografadas. Login funciona corretamente com verificação de hash.
+
+\subsection{RNF03 - Controle de Acesso}
+
+\textbf{Descrição}: O sistema deve garantir que usuários só possam modificar recursos que criaram.
+
+\textbf{Implementação}:
+\begin{itemize}
+    \item Verificação de propriedade antes de permitir edição ou exclusão
+    \item Comparação entre usuário autenticado e criador do recurso
+    \item Retorno de erro 403 para tentativas não autorizadas
+\end{itemize}
+
+\textbf{Critério de Aceitação}: Usuários conseguem modificar apenas seus próprios recursos. Tentativas de modificar recursos de outros usuários são bloqueadas.
+
+\section{Requisitos de Desempenho}
+
+\subsection{RNF04 - Tempo de Resposta}
+
+\textbf{Descrição}: O sistema deve responder às requisições em tempo adequado para uso interativo.
+
+\textbf{Implementação}:
+\begin{itemize}
+    \item Operações básicas (login, listagem) devem ser rápidas
+    \item Interface responsiva durante carregamento
+    \item Feedback visual para operações demoradas
+\end{itemize}
+
+\textbf{Critério de Aceitação}: Operações comuns completam em tempo razoável. Interface não trava durante uso normal.
+
+\subsection{RNF05 - Usuários Simultâneos}
+
+\textbf{Descrição}: O sistema deve suportar múltiplos usuários acessando simultaneamente.
+
+\textbf{Implementação}:
+\begin{itemize}
+    \item Configuração de banco para acesso concorrente
+    \item Autenticação independente por usuário
+    \item Isolamento de dados entre usuários
+\end{itemize}
+
+\textbf{Critério de Aceitação}: Múltiplos usuários podem usar o sistema ao mesmo tempo sem conflitos ou erros.
+
+\section{Requisitos de Usabilidade}
+
+\subsection{RNF06 - Interface Responsiva}
+
+\textbf{Descrição}: O sistema deve funcionar adequadamente em diferentes dispositivos e tamanhos de tela.
+
+\textbf{Implementação}:
+\begin{itemize}
+    \item Interface adaptável para desktop e mobile
+    \item Elementos visíveis e clicáveis em telas pequenas
+    \item Layout organizado e funcional
+\end{itemize}
+
+\textbf{Critério de Aceitação}: Interface utilizável tanto em computadores quanto em dispositivos móveis. Todos os elementos são acessíveis.
+
+\subsection{RNF07 - Mensagens Claras}
+
+\textbf{Descrição}: O sistema deve fornecer feedback claro sobre o resultado das operações.
+
+\textbf{Implementação}:
+\begin{itemize}
+    \item Mensagens de erro compreensíveis em português
+    \item Confirmação de operações bem-sucedidas
+    \item Indicação visual de carregamento quando necessário
+\end{itemize}
+
+\textbf{Critério de Aceitação}: Usuário recebe feedback claro sobre sucesso ou falha de suas ações. Mensagens são compreensíveis.
+
+\section{Requisitos de Confiabilidade}
+
+\subsection{RNF08 - Tratamento de Erros}
+
+\textbf{Descrição}: O sistema deve tratar erros de forma adequada sem quebrar ou perder dados.
+
+\textbf{Implementação}:
+\begin{itemize}
+    \item Validação de dados antes de salvar no banco
+    \item Tratamento de erros de conexão e operações
+    \item Manutenção da integridade dos dados
+\end{itemize}
+
+\textbf{Critério de Aceitação}: Sistema não quebra com entradas inválidas. Dados permanecem consistentes mesmo após erros.
+
+\section{Requisitos de Portabilidade}
+
+\subsection{RNF09 - Compatibilidade de Sistema}
+
+\textbf{Descrição}: O sistema deve funcionar nos principais sistemas operacionais.
+
+\textbf{Implementação}:
+\begin{itemize}
+    \item Backend compatível com Windows, Linux e macOS
+    \item Frontend compatível com navegadores modernos
+    \item Dependências multiplataforma
+\end{itemize}
+
+\textbf{Critério de Aceitação}: Sistema executa corretamente em Windows, Linux e macOS. Interface funciona nos principais navegadores.
+
+\section{Requisitos de Manutenibilidade}
+
+\subsection{RNF10 - Organização do Código}
+
+\textbf{Descrição}: O código deve ser organizado de forma clara para facilitar manutenção.
+
+\textbf{Implementação}:
+\begin{itemize}
+    \item Separação clara entre frontend e backend
+    \item Organização em módulos por funcionalidade
+    \item Código limpo e bem estruturado
+\end{itemize}
+
+\textbf{Critério de Aceitação}: Código é facilmente compreensível e modificável. Estrutura de arquivos é lógica e organizada.
+
+
+\end{document}
