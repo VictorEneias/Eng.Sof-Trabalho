@@ -1,0 +1,57 @@
+erDiagram
+    USUARIOS {
+        int id PK "Primary Key, Auto Increment"
+        string nome "Nome completo do usuário"
+        string email UK "Email único, índice"
+        string senha "Senha criptografada (BCrypt)"
+    }
+    
+    FEIRAS {
+        int id PK "Primary Key, Auto Increment"
+        string nome "Nome da feira"
+        string descricao "Descrição do evento"
+        date data_inicio "Data de início da feira"
+        date data_fim "Data de término da feira"
+        string local "Local do evento"
+        string cidade "Cidade onde ocorre"
+        string estado "Estado/UF"
+        int id_criador FK "Referência ao usuário organizador"
+    }
+    
+    EXPOSITORES {
+        int id PK "Primary Key, Auto Increment"
+        string nome "Nome do expositor/empresa"
+        string descricao "Descrição da empresa"
+        string contato "Informações de contato"
+        int feira_id FK "Referência à feira"
+        int id_criador FK "Referência ao usuário responsável"
+    }
+    
+    PRODUTOS {
+        int id PK "Primary Key, Auto Increment"
+        string nome "Nome comercial do produto"
+        string descricao "Descrição detalhada"
+        decimal preco "Preço em reais (R$)"
+        int expositor_id FK "Referência ao expositor"
+        int id_criador FK "Referência ao usuário cadastrador"
+    }
+    
+    INGRESSOS {
+        int id PK "Primary Key, Auto Increment"
+        string numero UK "Número único do ingresso (UUID)"
+        date data_emissao "Data de emissão"
+        int feira_id FK "Referência à feira"
+        int id_criador FK "Referência ao usuário comprador"
+    }
+    
+    %% Relacionamentos
+    USUARIOS ||--o{ FEIRAS : "cria/organiza"
+    USUARIOS ||--o{ EXPOSITORES : "cadastra"
+    USUARIOS ||--o{ PRODUTOS : "cadastra"
+    USUARIOS ||--o{ INGRESSOS : "compra"
+    
+    FEIRAS ||--o{ EXPOSITORES : "possui"
+    FEIRAS ||--o{ INGRESSOS : "gera"
+    
+    EXPOSITORES ||--o{ PRODUTOS : "oferece"
+} 
