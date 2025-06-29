@@ -16,29 +16,17 @@ async function handleSubmit(evt) {
 
   try {
     if (registrar) {
-      const r = await fetch("http://localhost:8000/usuarios/registrar", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      await api('/usuarios/registrar', {
+        method: 'POST',
         body: JSON.stringify(payloadRegistro)
       });
-
-      if (!r.ok) {
-        throw new Error("Falha no registro");
-      }
     }
 
-    const res = await fetch("http://localhost:8000/usuarios/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    const res = await api('/usuarios/login', {
+      method: 'POST',
       body: JSON.stringify(payloadLogin)
     });
-
-    if (!res.ok) {
-      throw new Error("Falha no login");
-    }
-
-    const data = await res.json();
-    onLogin(data.access_token);
+    onLogin(res.access_token);
 
   } catch (err) {
     console.error(err);

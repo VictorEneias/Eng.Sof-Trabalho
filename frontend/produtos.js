@@ -1,7 +1,7 @@
 import { api } from './api.js';
 const e = React.createElement;
 
-export default function Produtos({ expositorId }) {
+export default function Produtos({ expositorId, token }) {
   const [lista, setLista] = React.useState([]);
   const [novo, setNovo] = React.useState({ nome: '', descricao: '', preco: '' });
   const [edit, setEdit] = React.useState(null);
@@ -40,7 +40,7 @@ export default function Produtos({ expositorId }) {
 
   return e('div', null,
     e('h6', null, 'Produtos'),
-    e('form', { onSubmit: criar },
+    token && e('form', { onSubmit: criar },
       ['nome', 'descricao', 'preco'].map(c =>
         e('input', {
           key: c,
@@ -56,12 +56,12 @@ export default function Produtos({ expositorId }) {
         e('li', { key: prod.id },
           prod.nome + ' - R$ ' + prod.preco,
           ' ',
-          e('button', { onClick: () => setEdit({ ...prod, preco: prod.preco }) }, 'Editar'),
-          e('button', { onClick: () => excluir(prod.id) }, 'Excluir')
+          token && e('button', { onClick: () => setEdit({ ...prod, preco: prod.preco }) }, 'Editar'),
+          token && e('button', { onClick: () => excluir(prod.id) }, 'Excluir')
         )
       )
     ),
-    edit && e('form', { onSubmit: salvar },
+    token && edit && e('form', { onSubmit: salvar },
       ['nome', 'descricao', 'preco'].map(c =>
         e('input', {
           key: c,
