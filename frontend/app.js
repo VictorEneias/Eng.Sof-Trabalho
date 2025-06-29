@@ -6,10 +6,12 @@ const e = React.createElement;
 
 function App() {
   const [token, setTokenState] = React.useState(getToken());
+  const [showLogin, setShowLogin] = React.useState(false);
 
   function handleLogin(t) {
     setToken(t);
     setTokenState(t);
+    setShowLogin(false);
   }
 
   function handleLogout() {
@@ -18,7 +20,12 @@ function App() {
   }
 
   return e('div', null,
-    token ? e('button', { onClick: handleLogout }, 'Sair') : e(Login, { onLogin: handleLogin }),
+    token
+      ? e('button', { onClick: handleLogout }, 'Sair')
+      : showLogin
+        ? e(Login, { onLogin: handleLogin, onCancel: () => setShowLogin(false) })
+        : e('button', { onClick: () => setShowLogin(true) }, 'Entrar / Registrar'),
+
     e(Feiras, { token })
   );
 }

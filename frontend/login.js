@@ -1,7 +1,7 @@
 import { api } from './api.js';
 const e = React.createElement;
 
-export default function Login({ onLogin }) {
+export default function Login({ onLogin, onCancel }) {
   const [email, setEmail] = React.useState('');
   const [senha, setSenha] = React.useState('');
   const [nome, setNome] = React.useState('');
@@ -64,6 +64,7 @@ async function handleSubmit(evt) {
           setErro('');
         }
       }, registrar ? 'Já tenho conta' : 'Criar conta')
-    )
+    ),
+    onCancel && e('button', { type: 'button', onClick: onCancel }, 'Fechar')
   );
 }
