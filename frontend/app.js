@@ -25,6 +25,7 @@ function App() {
       : showLogin
         ? e(Login, { onLogin: handleLogin, onCancel: () => setShowLogin(false) })
         : e('button', { onClick: () => setShowLogin(true) }, 'Entrar / Registrar'),
+
     e(Feiras, { token })
   );
 }
