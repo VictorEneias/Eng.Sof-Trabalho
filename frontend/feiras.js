@@ -7,11 +7,13 @@ function FeiraItem({ feira, onSelect }) {
 
 import Expositores from './expositores.js';
 import Produtos from './produtos.js';
+import Ingressos from './ingressos.js';
 
 export default function Feiras() {
   const [feiras, setFeiras] = React.useState([]);
   const [selecionada, setSelecionada] = React.useState(null);
   const [expositorSel, setExpositorSel] = React.useState(null);
+  const [editForm, setEditForm] = React.useState(null);
   const [form, setForm] = React.useState({ nome: '', descricao: '', data_inicio: '', data_fim: '', local: '', cidade: '', estado: '' });
 
   React.useEffect(() => {
@@ -28,6 +30,24 @@ export default function Feiras() {
     const detalhes = await api(`/feiras/${feira.id}`);
     setSelecionada(detalhes);
     setExpositorSel(null);
+    setEditForm(null);
+  }
+
+  async function excluir(feiraId) {
+    await api(`/feiras/${feiraId}`, { method: 'DELETE' });
+    setFeiras(feiras.filter(f => f.id !== feiraId));
+    setSelecionada(null);
+  }
+
+  async function salvarEdicao(evt) {
+    evt.preventDefault();
+    const atualizada = await api(`/feiras/${editForm.id}`, {
+      method: 'PUT',
+      body: JSON.stringify(editForm)
+    });
+    setFeiras(feiras.map(f => f.id === editForm.id ? { ...f, ...editForm } : f));
+    setSelecionada({ ...selecionada, ...editForm });
+    setEditForm(null);
   }
 
   return e('div', null,
@@ -47,6 +67,19 @@ export default function Feiras() {
     selecionada && e('div', null,
       e('h4', null, selecionada.nome),
       e('pre', null, JSON.stringify(selecionada, null, 2)),
+      e('button', { onClick: () => excluir(selecionada.id) }, 'Excluir'),
+      !editForm && e('button', { onClick: () => setEditForm(selecionada) }, 'Editar'),
+      editForm && e('form', { onSubmit: salvarEdicao },
+        Object.keys(editForm).filter(k => k !== 'id' && k !== 'id_criador').map(campo =>
+          e('input', {
+            key: campo,
+            value: editForm[campo],
+            onChange: e => setEditForm({ ...editForm, [campo]: e.target.value })
+          })
+        ),
+        e('button', { type: 'submit' }, 'Salvar')
+      ),
+      e(Ingressos, { feiraId: selecionada.id }),
       e(Expositores, { feiraId: selecionada.id, onSelect: async exp => {
         const det = await api(`/expositores/${exp.id}`);
         setExpositorSel(det);

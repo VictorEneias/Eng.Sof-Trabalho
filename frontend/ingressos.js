@@ -19,11 +19,22 @@ export default function Ingressos({ feiraId }) {
     setLista([...lista, novo]);
   }
 
+  async function excluir(id) {
+    await api(`/ingressos/${id}`, { method: 'DELETE' });
+    setLista(lista.filter(i => i.id !== id));
+  }
+
   return e('div', null,
     e('h4', null, 'Ingressos'),
     e('form', { onSubmit: criar },
       e('button', { type: 'submit' }, 'Criar')
     ),
-    e('ul', null, lista.map(i => e('li', { key: i.id }, i.numero + ' - ' + i.nome_feira)))
+    e('ul', null, lista.map(i =>
+      e('li', { key: i.id },
+        i.numero + ' - ' + i.nome_feira,
+        ' ',
+        e('button', { onClick: () => excluir(i.id) }, 'Excluir')
+      )
+    ))
   );
 }
