@@ -35,27 +35,54 @@ async function handleSubmit(evt) {
 }
 
 
-  return e('form', { onSubmit: handleSubmit },
-    e('h3', null, registrar ? 'Registrar' : 'Login'),
-    erro ? e('div', { style: { color: 'red' } }, erro) : null,
-    registrar && e('input', {
-      placeholder: 'Nome',
-      value: nome,
-      onChange: e => setNome(e.target.value)
-    }),
-    e('input', {
-      placeholder: 'Email',
-      value: email,
-      onChange: e => setEmail(e.target.value)
-    }),
-    e('input', {
-      type: 'password',
-      placeholder: 'Senha',
-      value: senha,
-      onChange: e => setSenha(e.target.value)
-    }),
-    e('button', { type: 'submit' }, registrar ? 'Registrar' : 'Entrar'),
-    e('div', null,
+  return e('div', null,
+    erro && e('div', { className: 'alert alert-error' }, erro),
+    
+    e('form', { onSubmit: handleSubmit },
+      registrar && e('div', { className: 'form-group' },
+        e('label', { className: 'form-label' }, 'Nome Completo'),
+        e('input', {
+          className: 'form-input',
+          placeholder: 'Digite seu nome completo',
+          value: nome,
+          onChange: e => setNome(e.target.value),
+          required: true
+        })
+      ),
+      
+      e('div', { className: 'form-group' },
+        e('label', { className: 'form-label' }, 'Email'),
+        e('input', {
+          className: 'form-input',
+          type: 'email',
+          placeholder: 'Digite seu email',
+          value: email,
+          onChange: e => setEmail(e.target.value),
+          required: true
+        })
+      ),
+      
+      e('div', { className: 'form-group' },
+        e('label', { className: 'form-label' }, 'Senha'),
+        e('input', {
+          className: 'form-input',
+          type: 'password',
+          placeholder: 'Digite sua senha',
+          value: senha,
+          onChange: e => setSenha(e.target.value),
+          required: true
+        })
+      ),
+      
+      e('div', { className: 'form-actions' },
+        e('button', { 
+          type: 'submit',
+          className: 'btn btn-primary'
+        }, registrar ? 'Criar Conta' : 'Entrar')
+      )
+    ),
+    
+    e('div', { className: 'text-center mt-4' },
       e('a', {
         href: '#',
         onClick: evt => {
@@ -63,8 +90,7 @@ async function handleSubmit(evt) {
           setRegistrar(!registrar);
           setErro('');
         }
-      }, registrar ? 'Já tenho conta' : 'Criar conta')
-    ),
-    onCancel && e('button', { type: 'button', onClick: onCancel }, 'Fechar')
+      }, registrar ? 'Já tenho uma conta' : 'Criar nova conta')
+    )
   );
 }
