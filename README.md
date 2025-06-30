@@ -69,8 +69,8 @@ O sistema centraliza todas as operações relacionadas a feiras comerciais, reso
 - **Documentação**: Swagger UI automático
 
 ### Frontend (SPA)
-- **Framework**: React.js 18+
-- **Gerenciamento de Estado**: Context API
+- **Framework**: JavaScript Vanilla + React
+- **Gerenciamento de Estado**: LocalStorage
 - **Requisições HTTP**: Fetch API
 - **UI**: CSS3 + Flexbox/Grid
 - **Responsividade**: Mobile-first
@@ -92,27 +92,41 @@ Eng.Sof-Trabalho/
 │       ├── produtos.py      # Gestão de produtos
 │       └── ingressos.py     # Gestão de ingressos
 │
-├── 🌐 Frontend (React.js)
+├── 🌐 Frontend (JavaScript)
 │   ├── index.html           # Página principal
-│   ├── app.js               # Aplicação React
+│   ├── app.js               # Aplicação principal
 │   ├── api.js               # Configurações da API
-│   ├── login.js             # Componente de login
+│   ├── login.js             # Módulo de autenticação
 │   ├── feiras.js            # Gestão de feiras
 │   ├── expositores.js       # Gestão de expositores
 │   ├── produtos.js          # Gestão de produtos
-│   └── ingressos.js         # Gestão de ingressos
+│   ├── ingressos.js         # Gestão de ingressos
+│   └── styles/              # Estilos CSS
+│       ├── base.css         # Estilos base
+│       ├── components.css   # Componentes
+│       └── layout.css       # Layout responsivo
 │
 ├── 🧪 Testes
-│   └── api_test.py   # Exemplo funcional completo
+│   └── api_test.py          # Testes funcionais da API
 │
-├── 📚 Documentação
+├── 📚 Documentação LaTeX
 │   ├── docs/
-│   │   ├── visao_e_escopo.tex    # Documento de visão
-│   │   └── user_stories.tex      # Histórias de usuário
-│   └── README.md                 # Este arquivo
+│   │   ├── visao_e_escopo.tex               # Documento de visão
+│   │   ├── user_stories.tex                 # Histórias de usuário
+│   │   ├── architecture_notebook.tex        # Arquitetura do sistema
+│   │   ├── processo_gerenciamento.tex       # Processo Kanban
+│   │   ├── requisitos_nao_funcionais.tex    # Requisitos não funcionais
+│   │   ├── projeto_fisico_banco_dados.tex   # Projeto do banco
+│   │   ├── projeto_interface_usuario.tex    # Projeto da interface
+│   │   ├── infraestrutura_implantacao.tex   # Infraestrutura
+│   │   ├── requirements.md                  # Especificações do trabalho
+│   │   ├── diagrams/                        # Diagramas do sistema
+│   │   ├── wireframes/                      # Wireframes da interface
+│   │   └── pdf/                            # Documentos compilados
+│   └── README.md                           # Este arquivo
 │
 └── 📦 Configuração
-    └── requirements.txt          # Dependências Python
+    └── requirements.txt     # Dependências Python
 ```
 
 ## 🚀 Instalação e Execução
@@ -221,42 +235,6 @@ Acesse: `http://localhost:3000`
 | 📖 **Documentação** | `http://localhost:8000/docs` | Swagger UI interativo |
 | 🌐 **Frontend** | `http://localhost:3000` | Interface do usuário |
 
-## 📋 Histórias de Usuário (User Stories)
-
-O sistema implementa 20 histórias de usuário organizadas em 6 módulos:
-
-### 👥 Gestão de Usuários (US01-US02)
-- US01: Registro de novo usuário
-- US02: Login de usuário
-
-### 🎪 Gestão de Feiras (US03-US06)
-- US03: Criação de feira
-- US04: Listagem de feiras
-- US05: Edição de feira
-- US06: Exclusão de feira
-
-### 🏢 Gestão de Expositores (US07-US10)
-- US07: Cadastro de expositor
-- US08: Listagem de expositores
-- US09: Edição de expositor
-- US10: Exclusão de expositor
-
-### 📦 Gestão de Produtos (US11-US14)
-- US11: Cadastro de produto
-- US12: Listagem de produtos
-- US13: Edição de produto
-- US14: Exclusão de produto
-
-### 🎫 Gestão de Ingressos (US15-US18)
-- US15: Emissão de ingresso
-- US16: Listagem de ingressos
-- US17: Visualização de ingresso
-- US18: Controle de acesso
-
-### 🔒 Segurança e Autorização (US19-US20)
-- US19: Validação de propriedade
-- US20: Controle de acesso por token
-
 ## 🛠️ Solução de Problemas
 
 ### ❌ Erro de CORS
@@ -294,7 +272,16 @@ python tests/api_test.py
 
 ## 📚 Documentação Técnica
 
-- **Documento de Visão e Escopo**: `docs/visao_e_escopo.tex`
-- **Histórias de Usuário**: `docs/user_stories.tex`
+### Documentos LaTeX (em `docs/`)
+- **Visão e Escopo**: `visao_e_escopo.tex`
+- **Histórias de Usuário**: `user_stories.tex`
+- **Architecture Notebook**: `architecture_notebook.tex`
+- **Processo de Gerenciamento**: `processo_gerenciamento.tex`
+- **Requisitos Não Funcionais**: `requisitos_nao_funcionais.tex`
+- **Projeto Físico do Banco**: `projeto_fisico_banco_dados.tex`
+- **Projeto da Interface**: `projeto_interface_usuario.tex`
+- **Infraestrutura de Implantação**: `infraestrutura_implantacao.tex`
+
+### Documentação Online
 - **API Documentation**: `http://localhost:8000/docs` (Swagger UI)
 - **Redoc Documentation**: `http://localhost:8000/redoc`
