@@ -1,0 +1,97 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+
+\geometry{margin=2.5cm}
+\titleformat{\section}{\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{1em}{}
+
+\title{\textbf{Descrição da Infraestrutura de Implantação}\\
+\large Sistema de Gestão de Feiras (SGF)}
+\author{Higor Roger de Freitas Santos \quad 221006440\\
+Victor Eneias Oliveira \quad 221038364\\
+\\
+Engenharia de Software CIC0105 Turma 01 2025.1}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Hardware}
+
+\subsection{Requisitos Mínimos}
+\begin{itemize}
+    \item \textbf{CPU:} 1 core, 1.0 GHz
+    \item \textbf{RAM:} 2 GB
+    \item \textbf{Armazenamento:} 5 GB
+    \item \textbf{Rede:} Conexão com internet
+\end{itemize}
+
+\section{Software}
+
+\subsection{Sistema Operacional}
+\begin{itemize}
+    \item Windows 10/11
+    \item Linux (Ubuntu, CentOS)
+    \item macOS
+\end{itemize}
+
+\subsection{Dependências Necessárias}
+\begin{itemize}
+    \item Python 3.8+
+    \item Navegador web moderno (Chrome, Firefox, Edge)
+\end{itemize}
+
+\subsection{Bibliotecas Python}
+Conforme arquivo \texttt{requirements.txt}:
+\begin{itemize}
+    \item FastAPI
+    \item Uvicorn
+    \item SQLAlchemy
+    \item Pydantic
+    \item python-jose
+    \item passlib
+    \item bcrypt
+\end{itemize}
+
+\section{Serviços}
+
+\subsection{Banco de Dados}
+\begin{itemize}
+    \item SQLite (arquivo local)
+    \item Criado automaticamente na primeira execução
+    \item Localização: \texttt{./esw.db}
+\end{itemize}
+
+\subsection{Servidor Web}
+\begin{itemize}
+    \item Backend: Uvicorn (porta 8000)
+    \item Frontend: Arquivos HTML/CSS/JS servidos diretamente
+\end{itemize}
+
+\section{Execução}
+
+\subsection{Instalação}
+\begin{enumerate}
+    \item Instalar Python 3.8+
+    \item Executar: \texttt{pip install -r requirements.txt}
+    \item Executar: \texttt{uvicorn main:app --reload}
+    \item Acessar: \texttt{http://localhost:8000}
+\end{enumerate}
+
+\subsection{Estrutura de Arquivos}
+\begin{itemize}
+    \item \texttt{main.py} - Aplicação principal
+    \item \texttt{frontend/} - Arquivos da interface
+    \item \texttt{routers/} - Endpoints da API
+    \item \texttt{requirements.txt} - Dependências
+    \item \texttt{esw.db} - Banco de dados (criado automaticamente)
+\end{itemize}
+
+\end{document} 
