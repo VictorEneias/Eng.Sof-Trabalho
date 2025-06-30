@@ -47,45 +47,81 @@ export default function Feiras({ token }) {
   const [expositorSel, setExpositorSel] = React.useState(null);
   const [editForm, setEditForm] = React.useState(null);
   const [showDetails, setShowDetails] = React.useState(false);
+  const [erro, setErro] = React.useState('');
   const [form, setForm] = React.useState({ nome: '', descricao: '', data_inicio: '', data_fim: '', local: '', cidade: '', estado: '' });
 
   React.useEffect(() => {
-    api('/feiras').then(setFeiras).catch(console.error);
-  }, []);
+    // Se o usuário está logado, busca apenas suas feiras, senão busca todas
+    const endpoint = token ? '/feiras/minhas' : '/feiras';
+    api(endpoint).then(setFeiras).catch(console.error);
+  }, [token]);
 
   async function criar(evt) {
     evt.preventDefault();
-    const nova = await api('/feiras', { method: 'POST', body: JSON.stringify(editForm) });
-    setFeiras([...feiras, nova]);
-    setEditForm(null);
+    try {
+      const nova = await api('/feiras', { method: 'POST', body: JSON.stringify(editForm) });
+      setFeiras([...feiras, nova]);
+      setEditForm(null);
+      setErro('');
+    } catch (err) {
+      setErro('Erro ao criar feira: ' + (err.message || 'Tente novamente'));
+    }
   }
 
   async function selecionar(feira) {
-    const detalhes = await api(`/feiras/${feira.id}`);
-    setSelecionada(detalhes);
-    setShowDetails(true);
-    setExpositorSel(null);
-    setEditForm(null);
+    try {
+      const detalhes = await api(`/feiras/${feira.id}`);
+      setSelecionada(detalhes);
+      setShowDetails(true);
+      setExpositorSel(null);
+      setEditForm(null);
+      setErro('');
+    } catch (err) {
+      setErro('Erro ao carregar detalhes da feira');
+    }
   }
 
   async function excluir(feiraId) {
-    await api(`/feiras/${feiraId}`, { method: 'DELETE' });
-    setFeiras(feiras.filter(f => f.id !== feiraId));
-    setSelecionada(null);
+    try {
+      await api(`/feiras/${feiraId}`, { method: 'DELETE' });
+      setFeiras(feiras.filter(f => f.id !== feiraId));
+      setSelecionada(null);
+      setErro('');
+    } catch (err) {
+      setErro('Erro ao excluir feira: ' + (err.message || 'Verifique se não há expositores ou ingressos vinculados'));
+    }
   }
 
   async function salvarEdicao(evt) {
     evt.preventDefault();
-    const atualizada = await api(`/feiras/${editForm.id}`, {
-      method: 'PUT',
-      body: JSON.stringify(editForm)
-    });
-    setFeiras(feiras.map(f => f.id === editForm.id ? { ...f, ...editForm } : f));
-    setSelecionada({ ...selecionada, ...editForm });
-    setEditForm(null);
+    try {
+      const atualizada = await api(`/feiras/${editForm.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(editForm)
+      });
+      setFeiras(feiras.map(f => f.id === editForm.id ? { ...f, ...editForm } : f));
+      setSelecionada({ ...selecionada, ...editForm });
+      setEditForm(null);
+      setErro('');
+    } catch (err) {
+      if (err.message && err.message.includes('403')) {
+        setErro('Você não tem permissão para editar esta feira');
+      } else {
+        setErro('Erro ao salvar alterações: ' + (err.message || 'Tente novamente'));
+      }
+    }
   }
 
   return e('div', null,
+    // Mostrar erro se houver
+    erro && e('div', { className: 'alert alert-error mb-4' }, 
+      erro,
+      e('button', { 
+        className: 'alert-close',
+        onClick: () => setErro('')
+      }, '×')
+    ),
+
     // Header da seção
     e('div', { className: 'content-header' },
       e('div', null,
@@ -111,7 +147,7 @@ export default function Feiras({ token }) {
           }, '×')
         ),
         e('div', { className: 'modal-body' },
-          e('form', { onSubmit: criar },
+    e('form', { onSubmit: criar },
             e('div', { className: 'form-row' },
               e('div', { className: 'form-group' },
                 e('label', { className: 'form-label' }, 'Nome da Feira'),
@@ -169,7 +205,7 @@ export default function Feiras({ token }) {
             e('div', { className: 'form-row' },
               e('div', { className: 'form-group' },
                 e('label', { className: 'form-label' }, 'Cidade'),
-                e('input', {
+        e('input', {
                   className: 'form-input',
                   placeholder: 'Ex: São Paulo',
                   value: editForm.cidade,
@@ -215,7 +251,7 @@ export default function Feiras({ token }) {
             onClick: () => setEditForm({ nome: '', descricao: '', data_inicio: '', data_fim: '', local: '', cidade: '', estado: '' })
           }, 'Criar Primeira Feira')
         )
-      : e('div', { className: 'feira-grid' },
+      : e('div', { className: 'feiras-grid' },
           feiras.map(f => e(FeiraCard, { key: f.id, feira: f, onSelect: selecionar, token }))
         ),
     // Modal de detalhes da feira

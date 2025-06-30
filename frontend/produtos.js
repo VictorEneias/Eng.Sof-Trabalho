@@ -15,28 +15,62 @@ export default function Produtos({ expositorId, token, compact = false }) {
 
   async function criar(evt) {
     evt.preventDefault();
-    const criado = await api('/produtos/', {
-      method: 'POST',
-      body: JSON.stringify({ ...novo, expositor_id: expositorId, preco: parseFloat(novo.preco) })
-    });
-    setLista([...lista, criado]);
-    setNovo({ nome: '', descricao: '', preco: '' });
+    try {
+      const criado = await api('/produtos/', {
+        method: 'POST',
+        body: JSON.stringify({ ...novo, expositor_id: expositorId, preco: parseFloat(novo.preco) })
+      });
+      setLista([...lista, criado]);
+      setNovo({ nome: '', descricao: '', preco: '' });
+      setShowForm(false);
+    } catch (err) {
+      if (err.message && err.message.includes('403')) {
+        alert('Você não tem permissão para criar este produto');
+      } else {
+        alert('Erro ao criar produto: ' + (err.message || 'Tente novamente'));
+      }
+    }
   }
 
   async function excluir(id) {
-    await api(`/produtos/${id}`, { method: 'DELETE' });
-    setLista(lista.filter(p => p.id !== id));
-    if (edit && edit.id === id) setEdit(null);
+    if (!confirm('Excluir produto?')) return;
+    try {
+      await api(`/produtos/${id}`, { method: 'DELETE' });
+      setLista(lista.filter(p => p.id !== id));
+    } catch (err) {
+      if (err.message && err.message.includes('403')) {
+        alert('Você não tem permissão para excluir este produto');
+      } else {
+        alert('Erro ao excluir produto: ' + (err.message || 'Tente novamente'));
+      }
+    }
   }
 
   async function salvar(evt) {
     evt.preventDefault();
-    await api(`/produtos/${edit.id}`, {
-      method: 'PUT',
-      body: JSON.stringify({ ...edit, expositor_id: expositorId, preco: parseFloat(edit.preco) })
-    });
-    setLista(lista.map(p => p.id === edit.id ? edit : p));
-    setEdit(null);
+    try {
+      if (edit) {
+        const atualizado = await api(`/produtos/${edit.id}`, {
+          method: 'PUT',
+          body: JSON.stringify({ ...edit, expositor_id: expositorId, preco: parseFloat(edit.preco) })
+        });
+        setLista(lista.map(p => p.id === edit.id ? atualizado : p));
+        setEdit(null);
+      } else {
+        const novo = await api('/produtos', {
+          method: 'POST',
+          body: JSON.stringify({ ...novo, expositor_id: expositorId })
+        });
+        setLista([...lista, novo]);
+      }
+      setNovo({ nome: '', descricao: '', preco: '' });
+    } catch (err) {
+      if (err.message && err.message.includes('403')) {
+        alert('Você não tem permissão para ' + (edit ? 'editar' : 'criar') + ' este produto');
+      } else {
+        alert('Erro ao ' + (edit ? 'atualizar' : 'criar') + ' produto: ' + (err.message || 'Tente novamente'));
+      }
+    }
   }
 
   if (compact) {

@@ -40,9 +40,9 @@ export default function Ingressos({ feiraId, token, compact = false }) {
                 key: ingresso.id,
                 className: 'compact-item'
               },
-                e('div', { className: 'compact-item-content' },
+                                  e('div', { className: 'compact-item-content' },
                   e('span', { className: 'compact-item-name' }, `Ingresso #${ingresso.numero}`),
-                  e('span', { className: 'compact-item-desc' }, `Data: ${ingresso.data}`)
+                  e('span', { className: 'compact-item-desc' }, `Data: ${ingresso.data_emissao}`)
                 ),
                 token && e('div', { className: 'compact-item-actions' },
                   e('button', { 
@@ -88,7 +88,7 @@ export default function Ingressos({ feiraId, token, compact = false }) {
                     e('h4', { className: 'ingresso-numero' }, `#${ingresso.numero}`)
                   ),
                   e('div', { className: 'ingresso-info' },
-                    e('p', { className: 'ingresso-data' }, `📅 ${ingresso.data}`),
+                    e('p', { className: 'ingresso-data' }, `📅 ${ingresso.data_emissao}`),
                     e('p', { className: 'text-sm text-gray-500' }, `Feira ID: ${ingresso.feira_id}`)
                   )
                 ),

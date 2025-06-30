@@ -24,19 +24,46 @@ export default function Expositores({ feiraId, onSelect, token, compact = false 
   }
 
   async function excluir(id) {
-    await api(`/expositores/${id}`, { method: 'DELETE' });
-    setLista(lista.filter(e => e.id !== id));
-    if (edit && edit.id === id) setEdit(null);
+    if (!confirm('Excluir expositor?')) return;
+    try {
+      await api(`/expositores/${id}`, { method: 'DELETE' });
+      setLista(lista.filter(e => e.id !== id));
+    } catch (err) {
+      if (err.message && err.message.includes('403')) {
+        alert('Você não tem permissão para excluir este expositor');
+      } else if (err.message && err.message.includes('produtos')) {
+        alert('Não é possível excluir expositor que possui produtos cadastrados');
+      } else {
+        alert('Erro ao excluir expositor: ' + (err.message || 'Tente novamente'));
+      }
+    }
   }
 
   async function salvar(evt) {
     evt.preventDefault();
-    await api(`/expositores/${edit.id}`, {
-      method: 'PUT',
-      body: JSON.stringify({ ...edit, feira_id: feiraId })
-    });
-    setLista(lista.map(e => e.id === edit.id ? edit : e));
-    setEdit(null);
+    try {
+      if (edit) {
+        const atualizado = await api(`/expositores/${edit.id}`, {
+          method: 'PUT',
+          body: JSON.stringify({ ...edit, feira_id: feiraId })
+        });
+        setLista(lista.map(e => e.id === edit.id ? atualizado : e));
+        setEdit(null);
+      } else {
+        const novo = await api('/expositores', {
+          method: 'POST',
+          body: JSON.stringify({ ...novo, feira_id: feiraId })
+        });
+        setLista([...lista, novo]);
+      }
+      setNovo({ nome: '', descricao: '', contato: '' });
+    } catch (err) {
+      if (err.message && err.message.includes('403')) {
+        alert('Você não tem permissão para ' + (edit ? 'editar' : 'criar') + ' este expositor');
+      } else {
+        alert('Erro ao ' + (edit ? 'atualizar' : 'criar') + ' expositor: ' + (err.message || 'Tente novamente'));
+      }
+    }
   }
 
   if (compact) {
