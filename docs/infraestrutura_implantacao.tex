@@ -4,10 +4,20 @@
 \usepackage{geometry}
 \usepackage{titlesec}
 \usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
 
 \geometry{margin=2.5cm}
 \titleformat{\section}{\Large\bfseries}{\thesection}{1em}{}
 \titleformat{\subsection}{\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{1em}{}
+
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!10}
+}
 
 \title{\textbf{Descrição da Infraestrutura de Implantação}\\
 \large Sistema de Gestão de Feiras (SGF)}
@@ -23,75 +33,265 @@ Engenharia de Software CIC0105 Turma 01 2025.1}
 \tableofcontents
 \newpage
 
-\section{Hardware}
+\section{Visão Geral}
 
-\subsection{Requisitos Mínimos}
+O Sistema de Gestão de Feiras (SGF) foi projetado com uma arquitetura modular que permite implantação tanto em ambiente de desenvolvimento local quanto em produção. Este documento descreve os requisitos de hardware, software e serviços necessários para ambos os cenários.
+
+\section{Ambiente de Desenvolvimento}
+
+\subsection{Hardware - Desenvolvimento}
+\subsubsection{Requisitos Mínimos}
 \begin{itemize}
     \item \textbf{CPU:} 1 core, 1.0 GHz
     \item \textbf{RAM:} 2 GB
-    \item \textbf{Armazenamento:} 5 GB
-    \item \textbf{Rede:} Conexão com internet
+    \item \textbf{Armazenamento:} 5 GB livres
+    \item \textbf{Rede:} Conexão com internet para instalação de dependências
 \end{itemize}
 
-\section{Software}
+\subsubsection{Requisitos Recomendados}
+\begin{itemize}
+    \item \textbf{CPU:} 2+ cores, 2.0+ GHz
+    \item \textbf{RAM:} 4+ GB
+    \item \textbf{Armazenamento:} 10+ GB livres (SSD preferível)
+    \item \textbf{Rede:} Banda larga estável
+\end{itemize}
 
-\subsection{Sistema Operacional}
+\subsection{Software - Desenvolvimento}
+\subsubsection{Sistema Operacional}
 \begin{itemize}
     \item Windows 10/11
-    \item Linux (Ubuntu, CentOS)
-    \item macOS
+    \item Linux (Ubuntu 20.04+, CentOS 8+, Debian 10+)
+    \item macOS 10.15+
 \end{itemize}
 
-\subsection{Dependências Necessárias}
+\subsubsection{Dependências Necessárias}
 \begin{itemize}
-    \item Python 3.8+
-    \item Navegador web moderno (Chrome, Firefox, Edge)
+    \item Python 3.8+ (recomendado 3.9+)
+    \item pip (gerenciador de pacotes Python)
+    \item Navegador web moderno (Chrome 90+, Firefox 88+, Edge 90+)
+    \item Editor de código (opcional: VS Code, PyCharm)
 \end{itemize}
 
-\subsection{Bibliotecas Python}
+\subsubsection{Bibliotecas Python}
 Conforme arquivo \texttt{requirements.txt}:
-\begin{itemize}
-    \item FastAPI
-    \item Uvicorn
-    \item SQLAlchemy
-    \item Pydantic
-    \item python-jose
-    \item passlib
-    \item bcrypt
-\end{itemize}
+\begin{lstlisting}
+fastapi==0.68.0
+uvicorn[standard]==0.15.0
+sqlalchemy==1.4.23
+pydantic==1.8.2
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.5
+\end{lstlisting}
 
-\section{Serviços}
-
-\subsection{Banco de Dados}
-\begin{itemize}
-    \item SQLite (arquivo local)
-    \item Criado automaticamente na primeira execução
-    \item Localização: \texttt{./esw.db}
-\end{itemize}
-
-\subsection{Servidor Web}
-\begin{itemize}
-    \item Backend: Uvicorn (porta 8000)
-    \item Frontend: Arquivos HTML/CSS/JS servidos diretamente
-\end{itemize}
-
-\section{Execução}
-
-\subsection{Instalação}
+\subsection{Execução - Desenvolvimento}
+\subsubsection{Instalação}
 \begin{enumerate}
-    \item Instalar Python 3.8+
+    \item Clonar o repositório do projeto
+    \item Instalar Python 3.8+ no sistema
     \item Executar: \texttt{pip install -r requirements.txt}
-    \item Executar: \texttt{uvicorn main:app --reload}
-    \item Acessar: \texttt{http://localhost:8000}
+    \item Executar backend: \texttt{uvicorn main:app --reload --port 8000}
+    \item Servir frontend: \texttt{python -m http.server 3000} (pasta frontend)
+    \item Acessar: \texttt{http://localhost:3000}
 \end{enumerate}
 
-\subsection{Estrutura de Arquivos}
+\subsubsection{Estrutura de Arquivos - Desenvolvimento}
 \begin{itemize}
-    \item \texttt{main.py} - Aplicação principal
-    \item \texttt{frontend/} - Arquivos da interface
-    \item \texttt{routers/} - Endpoints da API
-    \item \texttt{requirements.txt} - Dependências
-    \item \texttt{esw.db} - Banco de dados (criado automaticamente)
+    \item \texttt{main.py} - Aplicação principal FastAPI
+    \item \texttt{frontend/} - Arquivos da interface (HTML/CSS/JS)
+    \item \texttt{routers/} - Endpoints da API REST
+    \item \texttt{models.py} - Modelos SQLAlchemy
+    \item \texttt{requirements.txt} - Dependências Python
+    \item \texttt{esw.db} - Banco SQLite (criado automaticamente)
 \end{itemize}
+
+\section{Ambiente de Produção}
+
+\subsection{Hardware - Produção}
+\subsubsection{Servidor de Aplicação}
+\begin{itemize}
+    \item \textbf{CPU:} 4+ cores, 2.4+ GHz (Intel Xeon ou AMD EPYC)
+    \item \textbf{RAM:} 8+ GB (16 GB recomendado)
+    \item \textbf{Armazenamento:} 50+ GB SSD NVMe
+    \item \textbf{Rede:} 1 Gbps, IP público estático
+    \item \textbf{Redundância:} Fonte redundante, RAID 1 para dados críticos
+\end{itemize}
+
+\subsubsection{Servidor de Banco de Dados (Opcional)}
+Para alta disponibilidade, separar o banco em servidor dedicado:
+\begin{itemize}
+    \item \textbf{CPU:} 2+ cores, 2.0+ GHz
+    \item \textbf{RAM:} 4+ GB (8 GB recomendado)
+    \item \textbf{Armazenamento:} 100+ GB SSD, backup automatizado
+    \item \textbf{Rede:} Conexão privada com servidor de aplicação
+\end{itemize}
+
+\subsection{Software - Produção}
+\subsubsection{Sistema Operacional}
+\begin{itemize}
+    \item \textbf{Recomendado:} Ubuntu Server 22.04 LTS
+    \item \textbf{Alternativas:} CentOS Stream 9, Debian 11, RHEL 9
+    \item \textbf{Configurações:} Firewall ativo, atualizações automáticas de segurança
+\end{itemize}
+
+\subsubsection{Servidor Web e Proxy Reverso}
+\begin{itemize}
+    \item \textbf{Nginx} (recomendado) ou Apache HTTP Server
+    \item \textbf{Função:} Proxy reverso, SSL/TLS, servir arquivos estáticos
+    \item \textbf{Configuração:} Rate limiting, compressão gzip
+\end{itemize}
+
+\subsubsection{Servidor de Aplicação}
+\begin{itemize}
+    \item \textbf{Gunicorn} com workers Uvicorn para produção
+    \item \textbf{Configuração:} Múltiplos workers, auto-restart
+    \item \textbf{Monitoramento:} Logs estruturados, métricas de performance
+\end{itemize}
+
+\subsubsection{Banco de Dados}
+\textbf{Opção 1 - SQLite (Pequena escala):}
+\begin{itemize}
+    \item Adequado para até 1000 usuários simultâneos
+    \item Backup diário automatizado
+    \item Replicação para servidor secundário
+\end{itemize}
+
+\textbf{Opção 2 - PostgreSQL (Escala média/alta):}
+\begin{itemize}
+    \item Adequado para 1000+ usuários simultâneos
+    \item Configuração master-slave para alta disponibilidade
+    \item Backup incremental e point-in-time recovery
+\end{itemize}
+
+\subsection{Serviços de Produção}
+\subsubsection{Segurança}
+\begin{itemize}
+    \item \textbf{SSL/TLS:} Certificado válido (Let's Encrypt ou comercial)
+    \item \textbf{Firewall:} Apenas portas 80, 443 e 22 (SSH) abertas
+    \item \textbf{Fail2Ban:} Proteção contra ataques de força bruta
+    \item \textbf{Backup:} Backup diário automatizado com retenção de 30 dias
+\end{itemize}
+
+\subsubsection{Monitoramento}
+\begin{itemize}
+    \item \textbf{Logs:} Centralizados via rsyslog ou ELK Stack
+    \item \textbf{Métricas:} CPU, RAM, disco, rede via Prometheus/Grafana
+    \item \textbf{Uptime:} Monitoramento externo (UptimeRobot, Pingdom)
+    \item \textbf{Alertas:} Notificações via email/SMS para problemas críticos
+\end{itemize}
+
+\subsubsection{Escalabilidade}
+\begin{itemize}
+    \item \textbf{Load Balancer:} Nginx ou HAProxy para múltiplas instâncias
+    \item \textbf{CDN:} CloudFlare ou AWS CloudFront para arquivos estáticos
+    \item \textbf{Cache:} Redis para sessões e cache de aplicação
+    \item \textbf{Auto-scaling:} Kubernetes ou Docker Swarm (opcional)
+\end{itemize}
+
+\section{Configuração de Produção}
+
+\subsection{Variáveis de Ambiente}
+\begin{lstlisting}
+# Configuracoes de producao
+ENVIRONMENT=production
+SECRET_KEY=<chave-secreta-forte-256-bits>
+DATABASE_URL=postgresql://user:pass@localhost/sgf_prod
+ALLOWED_HOSTS=sgf.exemplo.com,www.sgf.exemplo.com
+SSL_REDIRECT=true
+DEBUG=false
+LOG_LEVEL=INFO
+\end{lstlisting}
+
+\subsection{Configuração do Nginx}
+\begin{lstlisting}
+server {
+    listen 80;
+    server_name sgf.exemplo.com www.sgf.exemplo.com;
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name sgf.exemplo.com www.sgf.exemplo.com;
+    
+    ssl_certificate /etc/letsencrypt/live/sgf.exemplo.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/sgf.exemplo.com/privkey.pem;
+    
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    
+    location /static/ {
+        alias /var/www/sgf/frontend/;
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+}
+\end{lstlisting}
+
+\subsection{Configuração do Gunicorn}
+\begin{lstlisting}
+# gunicorn.conf.py
+bind = "127.0.0.1:8000"
+workers = 4
+worker_class = "uvicorn.workers.UvicornWorker"
+worker_connections = 1000
+max_requests = 1000
+max_requests_jitter = 100
+preload_app = True
+keepalive = 5
+\end{lstlisting}
+
+\section{Procedimento de Deploy}
+
+\subsection{Deploy Inicial}
+\begin{enumerate}
+    \item Provisionar servidor com especificações mínimas
+    \item Instalar e configurar sistema operacional
+    \item Configurar firewall e segurança básica
+    \item Instalar Python, Nginx, PostgreSQL (se aplicável)
+    \item Clonar código da aplicação
+    \item Configurar variáveis de ambiente
+    \item Instalar dependências Python
+    \item Configurar banco de dados e executar migrações
+    \item Configurar Nginx e SSL
+    \item Configurar monitoramento e backup
+    \item Testar funcionamento completo
+\end{enumerate}
+
+\subsection{Deploy de Atualizações}
+\begin{enumerate}
+    \item Backup do banco de dados atual
+    \item Baixar nova versão do código
+    \item Instalar novas dependências (se houver)
+    \item Executar migrações de banco (se houver)
+    \item Reiniciar serviços (Gunicorn, Nginx)
+    \item Verificar funcionamento
+    \item Rollback em caso de problemas
+\end{enumerate}
+
+\section{Estimativas de Custo}
+
+\subsection{Hospedagem em Cloud (mensal)}
+\begin{itemize}
+    \item \textbf{AWS EC2 t3.medium:} \$30-50/mês
+    \item \textbf{DigitalOcean Droplet 4GB:} \$24/mês
+    \item \textbf{Google Cloud e2-standard-2:} \$35-60/mês
+    \item \textbf{Azure B2s:} \$30-45/mês
+\end{itemize}
+
+\subsection{Serviços Adicionais (mensal)}
+\begin{itemize}
+    \item \textbf{Certificado SSL:} Gratuito (Let's Encrypt)
+    \item \textbf{Backup:} \$5-15/mês
+    \item \textbf{Monitoramento:} \$10-25/mês
+    \item \textbf{CDN:} \$5-20/mês
+    \item \textbf{Total estimado:} \$50-150/mês
+\end{itemize}
+
 
 \end{document} 
