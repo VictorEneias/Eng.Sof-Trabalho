@@ -496,4 +496,149 @@
   .table td {
     padding: var(--space-2) var(--space-3);
   }
+}
+
+/* Compact List Styles */
+.compact-list {
+  width: 100%;
+}
+
+.compact-items {
+  space-y: 0.5rem;
+}
+
+.compact-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s;
+}
+
+.compact-item:hover {
+  background: var(--gray-100);
+  border-color: var(--gray-300);
+}
+
+.compact-item-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  cursor: pointer;
+}
+
+.compact-item-name {
+  font-weight: 500;
+  color: var(--gray-900);
+  margin-bottom: 0.25rem;
+}
+
+.compact-item-desc {
+  font-size: 0.875rem;
+  color: var(--gray-600);
+}
+
+.compact-item-price {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-top: 0.25rem;
+}
+
+.compact-item-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: 1rem;
+}
+
+/* Form Compact */
+.form-compact {
+  background: var(--gray-50);
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--gray-200);
+}
+
+.form-input-sm {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+/* Button Extra Small */
+.btn-xs {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+/* Modal Small */
+.modal-sm {
+  max-width: 400px;
+}
+
+/* Section Styles */
+.section {
+  margin-bottom: 2rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--gray-900);
+}
+
+/* Ingresso Ticket Styles */
+.ingresso-ticket {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ingresso-ticket::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+  background-size: 20px 20px;
+}
+
+.ingresso-header {
+  position: relative;
+  z-index: 1;
+}
+
+.ingresso-numero {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.ingresso-info {
+  position: relative;
+  z-index: 1;
+  margin-top: 0.5rem;
+}
+
+.ingresso-data {
+  margin: 0;
+  font-size: 0.875rem;
+  opacity: 0.9;
 } 

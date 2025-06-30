@@ -1,0 +1,314 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{hyperref}
+
+\geometry{margin=2.5cm}
+\titleformat{\section}{\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{1em}{}
+
+\title{\textbf{Projeto de Interface com o Usuário}\\
+\large Sistema de Gestão de Feiras}
+\author{Higor Roger de Freitas Santos \quad 221006440\\
+Victor Eneias Oliveira \quad 221038364\\
+\\
+Engenharia de Software CIC0105 Turma 01 2025.1}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Wireframes das Telas Principais}
+
+Este documento apresenta os wireframes e storyboards das principais telas do Sistema de Gestão de Feiras, implementados como protótipo funcional.
+
+\subsection{Tela 1: Interface Principal (Não Autenticado)}
+
+A tela inicial apresenta a lista de feiras disponíveis para visualização pública, com opção de login no header.
+
+\begin{figure}[H]
+\centering
+\fbox{\begin{minipage}{0.8\textwidth}
+\centering
+\vspace{3cm}
+\textbf{[INSERIR PRINT: Tela inicial com lista de feiras]}\\
+\textbf{Arquivo: tela\_01\_inicial.png}
+\vspace{3cm}
+\end{minipage}}
+\caption{Tela inicial do sistema}
+\label{fig:tela_inicial}
+\end{figure}
+
+\textbf{Elementos principais:}
+\begin{itemize}
+    \item Header com logo do sistema e botão "Entrar"
+    \item Sidebar de navegação
+    \item Grid responsivo de cards de feiras
+    \item Informações públicas visíveis (nome, descrição, datas, local)
+\end{itemize}
+
+\subsection{Tela 2: Modal de Login/Registro}
+
+Modal centralizado para autenticação de usuários com alternância entre login e registro.
+
+\begin{figure}[H]
+\centering
+\fbox{\begin{minipage}{0.8\textwidth}
+\centering
+\vspace{3cm}
+\textbf{[INSERIR PRINT: Modal de login aberto]}\\
+\textbf{Arquivo: tela\_02\_login.png}
+\vspace{3cm}
+\end{minipage}}
+\caption{Modal de autenticação}
+\label{fig:modal_login}
+\end{figure}
+
+\textbf{Funcionalidades:}
+\begin{itemize}
+    \item Formulário responsivo com validação
+    \item Alternância entre modo login e registro
+    \item Feedback visual para erros
+    \item Overlay escuro de fundo
+\end{itemize}
+
+\subsection{Tela 3: Dashboard (Usuário Autenticado)}
+
+Visão geral do sistema com estatísticas e navegação principal após autenticação.
+
+\begin{figure}[H]
+\centering
+\fbox{\begin{minipage}{0.8\textwidth}
+\centering
+\vspace{3cm}
+\textbf{[INSERIR PRINT: Dashboard com estatísticas]}\\
+\textbf{Arquivo: tela\_03\_dashboard.png}
+\vspace{3cm}
+\end{minipage}}
+\caption{Dashboard principal}
+\label{fig:dashboard}
+\end{figure}
+
+\textbf{Componentes:}
+\begin{itemize}
+    \item Cards de estatísticas (Feiras, Expositores, Produtos, Ingressos)
+    \item Navegação atualizada com opções de gestão
+    \item Avatar e menu de usuário
+    \item Layout em grid responsivo
+\end{itemize}
+
+\subsection{Tela 4: Lista de Feiras (Usuário Autenticado)}
+
+Interface de gestão de feiras com opções de criação e edição.
+
+\begin{figure}[H]
+\centering
+\fbox{\begin{minipage}{0.8\textwidth}
+\centering
+\vspace{3cm}
+\textbf{[INSERIR PRINT: Lista de feiras com botão "Nova Feira"]}\\
+\textbf{Arquivo: tela\_04\_feiras\_gestao.png}
+\vspace{3cm}
+\end{minipage}}
+\caption{Gestão de feiras}
+\label{fig:gestao_feiras}
+\end{figure}
+
+\textbf{Elementos adicionais para usuários autenticados:}
+\begin{itemize}
+    \item Botão "Nova Feira" destacado
+    \item Badge "Gerenciar" nos cards
+    \item Ações contextuais por feira
+\end{itemize}
+
+\subsection{Tela 5: Modal de Criação de Feira}
+
+Formulário modal para cadastro de novas feiras com validação completa.
+
+\begin{figure}[H]
+\centering
+\fbox{\begin{minipage}{0.8\textwidth}
+\centering
+\vspace{3cm}
+\textbf{[INSERIR PRINT: Modal de criação de feira]}\\
+\textbf{Arquivo: tela\_05\_criar\_feira.png}
+\vspace{3cm}
+\end{minipage}}
+\caption{Formulário de criação de feira}
+\label{fig:criar_feira}
+\end{figure}
+
+\textbf{Campos do formulário:}
+\begin{itemize}
+    \item Nome da feira e local (linha superior)
+    \item Descrição (campo expandido)
+    \item Datas de início e fim
+    \item Cidade e estado
+    \item Botões de ação (Cancelar/Criar)
+\end{itemize}
+
+\subsection{Tela 6: Modal de Detalhes da Feira}
+
+Modal detalhado com informações completas da feira e gestão de expositores/ingressos.
+
+\begin{figure}[H]
+\centering
+\fbox{\begin{minipage}{0.8\textwidth}
+\centering
+\vspace{3cm}
+\textbf{[INSERIR PRINT: Modal de detalhes da feira]}\\
+\textbf{Arquivo: tela\_06\_detalhes\_feira.png}
+\vspace{3cm}
+\end{minipage}}
+\caption{Detalhes completos da feira}
+\label{fig:detalhes_feira}
+\end{figure}
+
+\textbf{Seções do modal:}
+\begin{itemize}
+    \item Informações principais (nome, descrição, datas, local)
+    \item Lista de expositores com ações
+    \item Gestão de ingressos
+    \item Botões de edição e exclusão (apenas para criador)
+\end{itemize}
+
+\subsection{Tela 7: Gestão de Expositores}
+
+Interface para cadastro e gestão de expositores dentro de uma feira.
+
+\begin{figure}[H]
+\centering
+\fbox{\begin{minipage}{0.8\textwidth}
+\centering
+\vspace{3cm}
+\textbf{[INSERIR PRINT: Modal de gestão de expositores]}\\
+\textbf{Arquivo: tela\_07\_expositores.png}
+\vspace{3cm}
+\end{minipage}}
+\caption{Gestão de expositores}
+\label{fig:gestao_expositores}
+\end{figure}
+
+\subsection{Tela 8: Gestão de Produtos}
+
+Interface para cadastro de produtos por expositor.
+
+\begin{figure}[H]
+\centering
+\fbox{\begin{minipage}{0.8\textwidth}
+\centering
+\vspace{3cm}
+\textbf{[INSERIR PRINT: Modal de gestão de produtos]}\\
+\textbf{Arquivo: tela\_08\_produtos.png}
+\vspace{3cm}
+\end{minipage}}
+\caption{Gestão de produtos}
+\label{fig:gestao_produtos}
+\end{figure}
+
+\subsection{Tela 9: Versão Mobile}
+
+Adaptação responsiva para dispositivos móveis.
+
+\begin{figure}[H]
+\centering
+\fbox{\begin{minipage}{0.5\textwidth}
+\centering
+\vspace{4cm}
+\textbf{[INSERIR PRINT: Versão mobile]}\\
+\textbf{Arquivo: tela\_09\_mobile.png}
+\vspace{4cm}
+\end{minipage}}
+\caption{Interface responsiva mobile}
+\label{fig:mobile}
+\end{figure}
+
+\section{Fluxos de Navegação}
+
+\subsection{Fluxo Principal de Usuário}
+
+\begin{figure}[H]
+\centering
+\fbox{\begin{minipage}{0.9\textwidth}
+\centering
+\vspace{3cm}
+\textbf{[INSERIR DIAGRAMA MERMAID: Fluxo de navegação]}\\
+\textbf{Arquivo: fluxo\_navegacao.png}
+\vspace{3cm}
+\end{minipage}}
+\caption{Diagrama de fluxo de navegação}
+\label{fig:fluxo_navegacao}
+\end{figure}
+
+\subsection{Fluxo de Criação de Feira}
+
+\begin{figure}[H]
+\centering
+\fbox{\begin{minipage}{0.9\textwidth}
+\centering
+\vspace{3cm}
+\textbf{[INSERIR DIAGRAMA MERMAID: Fluxo de criação]}\\
+\textbf{Arquivo: fluxo\_criacao\_feira.png}
+\vspace{3cm}
+\end{minipage}}
+\caption{Fluxo de criação de feira}
+\label{fig:fluxo_criacao}
+\end{figure}
+
+\section{Sistema de Design}
+
+\subsection{Paleta de Cores}
+
+\begin{itemize}
+    \item \textbf{Primary Blue:} \#2563EB (Azul principal)
+    \item \textbf{Primary Dark:} \#1D4ED8 (Azul escuro)
+    \item \textbf{Success:} \#10B981 (Verde sucesso)
+    \item \textbf{Warning:} \#F59E0B (Amarelo alerta)
+    \item \textbf{Error:} \#EF4444 (Vermelho erro)
+    \item \textbf{Gray 50:} \#F8FAFC (Fundo claro)
+    \item \textbf{Gray 900:} \#0F172A (Texto principal)
+\end{itemize}
+
+\subsection{Tipografia}
+
+\begin{itemize}
+    \item \textbf{Fonte:} Inter (Google Fonts)
+    \item \textbf{Tamanhos:} 12px, 14px, 16px, 18px, 24px, 32px
+    \item \textbf{Pesos:} 400 (Regular), 500 (Medium), 600 (Semibold), 700 (Bold)
+\end{itemize}
+
+\subsection{Componentes Reutilizáveis}
+
+\begin{itemize}
+    \item \textbf{Botões:} Primário, secundário, perigo com estados hover/focus
+    \item \textbf{Cards:} Container base com elevação e bordas arredondadas
+    \item \textbf{Modais:} Overlay com container centralizado
+    \item \textbf{Formulários:} Campos padronizados com validação visual
+\end{itemize}
+
+\section{Responsividade}
+
+\subsection{Breakpoints}
+\begin{itemize}
+    \item \textbf{Mobile:} < 640px
+    \item \textbf{Tablet:} 640px - 768px
+    \item \textbf{Desktop:} > 768px
+\end{itemize}
+
+\subsection{Adaptações}
+\begin{itemize}
+    \item \textbf{Mobile:} Sidebar colapsa, grid em coluna única, modais full-screen
+    \item \textbf{Tablet:} Sidebar reduzida, grid em 2 colunas
+    \item \textbf{Desktop:} Layout completo com sidebar fixa
+\end{itemize}
+
+\end{document} 

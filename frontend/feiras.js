@@ -46,6 +46,7 @@ export default function Feiras({ token }) {
   const [selecionada, setSelecionada] = React.useState(null);
   const [expositorSel, setExpositorSel] = React.useState(null);
   const [editForm, setEditForm] = React.useState(null);
+  const [showDetails, setShowDetails] = React.useState(false);
   const [form, setForm] = React.useState({ nome: '', descricao: '', data_inicio: '', data_fim: '', local: '', cidade: '', estado: '' });
 
   React.useEffect(() => {
@@ -62,6 +63,7 @@ export default function Feiras({ token }) {
   async function selecionar(feira) {
     const detalhes = await api(`/feiras/${feira.id}`);
     setSelecionada(detalhes);
+    setShowDetails(true);
     setExpositorSel(null);
     setEditForm(null);
   }
@@ -216,30 +218,195 @@ export default function Feiras({ token }) {
       : e('div', { className: 'feira-grid' },
           feiras.map(f => e(FeiraCard, { key: f.id, feira: f, onSelect: selecionar, token }))
         ),
-    selecionada && e('div', null,
-      e('h4', null, selecionada.nome),
-      e('pre', null, JSON.stringify(selecionada, null, 2)),
-      token && e('button', { onClick: () => excluir(selecionada.id) }, 'Excluir'),
-      token && !editForm && e('button', { onClick: () => setEditForm(selecionada) }, 'Editar'),
-      token && editForm && e('form', { onSubmit: salvarEdicao },
-        Object.keys(editForm).filter(k => k !== 'id' && k !== 'id_criador').map(campo =>
-          e('input', {
-            key: campo,
-            value: editForm[campo],
-            onChange: e => setEditForm({ ...editForm, [campo]: e.target.value })
-          })
+    // Modal de detalhes da feira
+    showDetails && selecionada && e('div', { className: 'modal-overlay' },
+      e('div', { className: 'modal', style: { maxWidth: '800px' } },
+        e('div', { className: 'modal-header' },
+          e('h3', { className: 'modal-title' }, selecionada.nome),
+          e('button', { 
+            className: 'modal-close',
+            onClick: () => setShowDetails(false)
+          }, '×')
         ),
-        e('button', { type: 'submit' }, 'Salvar')
-      ),
-      e(Ingressos, { feiraId: selecionada.id, token }),
-      e(Expositores, { feiraId: selecionada.id, token, onSelect: async exp => {
-        const det = await api(`/expositores/${exp.id}`);
-        setExpositorSel(det);
-      } }),
-      expositorSel && e('div', null,
-        e('h5', null, expositorSel.nome),
-        e('pre', null, JSON.stringify(expositorSel, null, 2)),
-        e(Produtos, { expositorId: expositorSel.id, token })
+        e('div', { className: 'modal-body' },
+          // Informações da feira
+          e('div', { className: 'card mb-4' },
+            e('div', { className: 'card-body' },
+              e('div', { className: 'feira-card-meta mb-4' },
+                e('div', { className: 'feira-card-date' },
+                  e('span', null, '📅'),
+                  `${selecionada.data_inicio} a ${selecionada.data_fim}`
+                ),
+                e('div', { className: 'feira-card-location' },
+                  e('span', null, '📍'),
+                  `${selecionada.local}, ${selecionada.cidade}/${selecionada.estado}`
+                )
+              ),
+              e('p', { className: 'text-gray-700' }, selecionada.descricao),
+              
+              // Botões de ação (apenas para criador)
+              token && e('div', { className: 'mt-4' },
+                e('button', { 
+                  className: 'btn btn-primary btn-sm mr-2',
+                  onClick: () => setEditForm(selecionada)
+                }, 'Editar'),
+                e('button', { 
+                  className: 'btn btn-danger btn-sm',
+                  onClick: () => {
+                    if (confirm('Tem certeza que deseja excluir esta feira?')) {
+                      excluir(selecionada.id);
+                      setShowDetails(false);
+                    }
+                  }
+                }, 'Excluir')
+              )
+            )
+          ),
+
+          // Seções de gestão
+          e('div', { className: 'grid', style: { gridTemplateColumns: '1fr 1fr', gap: '1rem' } },
+            // Expositores
+            e('div', { className: 'card' },
+              e('div', { className: 'card-header' },
+                e('h4', { className: 'card-title' }, '🏢 Expositores')
+              ),
+              e('div', { className: 'card-body' },
+                e(Expositores, { 
+                  feiraId: selecionada.id, 
+                  token, 
+                  compact: true,
+                  onSelect: async exp => {
+                    const det = await api(`/expositores/${exp.id}`);
+                    setExpositorSel(det);
+                  }
+                })
+              )
+            ),
+
+            // Ingressos
+            e('div', { className: 'card' },
+              e('div', { className: 'card-header' },
+                e('h4', { className: 'card-title' }, '🎫 Ingressos')
+              ),
+              e('div', { className: 'card-body' },
+                e(Ingressos, { feiraId: selecionada.id, token, compact: true })
+              )
+            )
+          ),
+
+          // Modal de produtos do expositor selecionado
+          expositorSel && e('div', { className: 'card mt-4' },
+            e('div', { className: 'card-header' },
+              e('h4', { className: 'card-title' }, `📦 Produtos - ${expositorSel.nome}`),
+              e('button', { 
+                className: 'btn btn-secondary btn-sm',
+                onClick: () => setExpositorSel(null)
+              }, 'Fechar')
+            ),
+            e('div', { className: 'card-body' },
+              e(Produtos, { expositorId: expositorSel.id, token, compact: true })
+            )
+          )
+        )
+      )
+    ),
+
+    // Modal de edição de feira
+    (editForm && editForm.id) && e('div', { className: 'modal-overlay' },
+      e('div', { className: 'modal' },
+        e('div', { className: 'modal-header' },
+          e('h3', { className: 'modal-title' }, 'Editar Feira'),
+          e('button', { 
+            className: 'modal-close',
+            onClick: () => setEditForm(null)
+          }, '×')
+        ),
+        e('div', { className: 'modal-body' },
+          e('form', { onSubmit: salvarEdicao },
+            e('div', { className: 'form-row' },
+              e('div', { className: 'form-group' },
+                e('label', { className: 'form-label' }, 'Nome da Feira'),
+                e('input', {
+                  className: 'form-input',
+                  value: editForm.nome,
+                  onChange: e => setEditForm({ ...editForm, nome: e.target.value }),
+                  required: true
+                })
+              ),
+              e('div', { className: 'form-group' },
+                e('label', { className: 'form-label' }, 'Local'),
+                e('input', {
+                  className: 'form-input',
+                  value: editForm.local,
+                  onChange: e => setEditForm({ ...editForm, local: e.target.value }),
+                  required: true
+                })
+              )
+            ),
+            e('div', { className: 'form-group' },
+              e('label', { className: 'form-label' }, 'Descrição'),
+              e('textarea', {
+                className: 'form-textarea',
+                value: editForm.descricao,
+                onChange: e => setEditForm({ ...editForm, descricao: e.target.value }),
+                required: true
+              })
+            ),
+            e('div', { className: 'form-row' },
+              e('div', { className: 'form-group' },
+                e('label', { className: 'form-label' }, 'Data de Início'),
+                e('input', {
+                  className: 'form-input',
+                  type: 'date',
+                  value: editForm.data_inicio,
+                  onChange: e => setEditForm({ ...editForm, data_inicio: e.target.value }),
+                  required: true
+                })
+              ),
+              e('div', { className: 'form-group' },
+                e('label', { className: 'form-label' }, 'Data de Término'),
+                e('input', {
+                  className: 'form-input',
+                  type: 'date',
+                  value: editForm.data_fim,
+                  onChange: e => setEditForm({ ...editForm, data_fim: e.target.value }),
+                  required: true
+                })
+              )
+            ),
+            e('div', { className: 'form-row' },
+              e('div', { className: 'form-group' },
+                e('label', { className: 'form-label' }, 'Cidade'),
+                e('input', {
+                  className: 'form-input',
+                  value: editForm.cidade,
+                  onChange: e => setEditForm({ ...editForm, cidade: e.target.value }),
+                  required: true
+                })
+              ),
+              e('div', { className: 'form-group' },
+                e('label', { className: 'form-label' }, 'Estado'),
+                e('input', {
+                  className: 'form-input',
+                  value: editForm.estado,
+                  onChange: e => setEditForm({ ...editForm, estado: e.target.value }),
+                  required: true
+                })
+              )
+            ),
+            e('div', { className: 'form-actions' },
+              e('button', { 
+                type: 'button',
+                className: 'btn btn-secondary',
+                onClick: () => setEditForm(null)
+              }, 'Cancelar'),
+              e('button', { 
+                type: 'submit',
+                className: 'btn btn-primary'
+              }, 'Salvar Alterações')
+            )
+          )
+        )
       )
     )
   );
