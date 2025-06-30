@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 from database import SessionLocal
 from schemas import UsuarioCreate, UsuarioLogin, UsuarioOut
 from crud import criar_usuario, autenticar_usuario
@@ -16,7 +17,10 @@ def get_db():
 
 @router.post("/registrar", response_model=UsuarioOut)
 def registrar(usuario: UsuarioCreate, db: Session = Depends(get_db)):
-    return criar_usuario(db, usuario)
+    try:
+        return criar_usuario(db, usuario)
+    except IntegrityError:
+        raise HTTPException(status_code=400, detail="Email já está em uso")
 
 @router.post("/login")
 def login(dados: UsuarioLogin, db: Session = Depends(get_db)):

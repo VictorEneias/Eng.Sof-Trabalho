@@ -34,6 +34,10 @@ def criar_feira(feira: FeiraCreate, db: Session = Depends(get_db), usuario_id: i
 def listar_feiras(db: Session = Depends(get_db)):
     return db.query(Feira).all()
 
+@router.get("/minhas", response_model=list[FeiraOut])
+def minhas_feiras(db: Session = Depends(get_db), usuario_id: int = Depends(get_usuario_id)):
+    return db.query(Feira).filter(Feira.id_criador == usuario_id).all()
+
 @router.get("/{feira_id}", response_model=FeiraOut)
 def obter_feira(feira_id: int, db: Session = Depends(get_db)):
     feira = db.query(Feira).get(feira_id)
