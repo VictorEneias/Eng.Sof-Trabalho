@@ -127,6 +127,8 @@ Eng.Sof-Trabalho/
 │
 └── 📦 Configuração
     └── requirements.txt     # Dependências Python
+└── 🎞️ demo.mp4 # Video Demonstrativo do Projeto
+
 ```
 
 ## 🚀 Instalação e Execução
